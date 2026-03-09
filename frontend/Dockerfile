@@ -40,6 +40,6 @@ RUN npm install express
 COPY --from=build /app/dist ./dist
 COPY server.js ./
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["node", "server.js"]
