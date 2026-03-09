@@ -177,13 +177,6 @@ Main backend routes:
 
 ## Troubleshooting
 
-### `git pull` says branches are divergent
-
-Use a one-off merge pull:
-
-```bash
-git pull --no-rebase origin master
-```
 
 ### Share page loads but no data appears
 
