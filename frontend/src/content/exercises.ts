@@ -33,7 +33,7 @@ export type ExerciseMeta = {
   };
 };
 
-// Order matches Book of Serendip: Reflection after Part 1, then The course, ILO, etc.
+// Order matches the course canvas flow: Reflection after Part 1, then The course, ILO, etc.
 export const exercisesMeta: ExerciseMeta[] = [
   {
     id: 'reflectionGoodTeaching',

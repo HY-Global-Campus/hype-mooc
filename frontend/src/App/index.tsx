@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import FrontPage from './Pages/Frontpage';
 import AssignmentPage from './Pages/Assignment';
 import Part1Page from './Pages/Part1';
@@ -21,7 +21,7 @@ import LearningObjectivesExercise from './Components/Exercise/LearningObjectives
 import { exercisesMeta } from '../content/exercises';
 import './Pages/pages.css';
 
-// Order matches Book of Serendip
+// Order matches the course canvas flow
 const pages = [
   { path: '/', label: 'FrontPage', color: 'white' },
   { path: '/assignment', label: 'Assignment', color: 'black' },
@@ -73,7 +73,6 @@ function App() {
             </AppLayout>
           }
         >
-          <Route path="/bos" element={<Navigate to="/" />} />
           <Route path="/" element={<FrontPage />} />
           <Route path="/assignment" element={<AssignmentPage />} />
           <Route path="/part1" element={<Part1Page />} />
