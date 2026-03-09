@@ -1,16 +1,14 @@
-# frontend/Dockerfile (dev)
-FROM node:20-alpine
+# frontend/Dockerfile — production: build then serve with Node
+FROM node:20-alpine AS builder
 WORKDIR /usr/src/app
-
-# (Optional, helps some native deps) 
-# RUN apk add --no-cache libc6-compat
-
 COPY package*.json ./
 RUN npm ci
-
 COPY . .
+RUN npm run build
 
-EXPOSE 5173
-# Bind to all interfaces; keep same port each time
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173", "--strictPort"]
-
+FROM node:20-alpine
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/dist ./dist
+RUN npm init -y && npm install serve
+EXPOSE 8080
+CMD ["npx", "serve", "-s", "dist", "-l", "8080"]
