@@ -12,6 +12,7 @@ import EndPage from './Pages/EndPage';
 import ProtectedRoute from './Components/ProtectedRoute';
 import AppLayout from './Components/AppLayout';
 import Login from './Components/Login';
+import AuthCallback from './Components/AuthCallback';
 import Logout from './Components/Logout';
 import ViewAllExercises from './Pages/View';
 import TextExercise from './Components/Exercise/TextExercise';
@@ -63,6 +64,7 @@ function App() {
       </style>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/view/:userId" element={<ViewAllExercises />} />
         <Route

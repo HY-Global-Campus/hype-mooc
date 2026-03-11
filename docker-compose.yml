@@ -6,6 +6,8 @@ services:
       NODE_ENV: development
       DATABASE_URL: postgres://user:password@db:5432/mydatabase
       JWT_SECRET: developmentsecret
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-}
       GCAI_URL: ${GCAI_URL}
       GCAI_TOKEN: ${GCAI_TOKEN}
       # More reliable file watching inside containers (optional but helpful)
@@ -40,10 +42,14 @@ services:
       - "5432:5432"
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: dev
+      args:
+        VITE_API_URL: http://localhost:${BACKEND_PORT:-8081}
     environment:
-      NODE_ENV: development
       VITE_API_URL: http://localhost:${BACKEND_PORT:-8081}
+      VITE_OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       # Optional: improves HMR file detection in Docker
       CHOKIDAR_USEPOLLING: "true"
       CHOKIDAR_INTERVAL: "150"

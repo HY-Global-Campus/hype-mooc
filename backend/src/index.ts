@@ -1,5 +1,5 @@
 import express from 'express'
-import loginRouter from './controllers/login.js';
+import authRouter from './controllers/auth.js';
 import authMiddleware from './middlewares/auth.js'
 import User from './models/user.js';
 import { dbSync } from './services/database.js';
@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/login', loginRouter);
+app.use('/auth', authRouter);
 app.use('/chatbot', authMiddleware, chatbotRouter)
 app.use('/bookones', authMiddleware, BookOneRouter);
 app.get('/course/share/:userid', async (req, res) => {
