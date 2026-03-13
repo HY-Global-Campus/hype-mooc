@@ -1,20 +1,140 @@
 import express from 'express';
-import axios from 'axios';
+import * as oidc from 'openid-client';
 import jsonwebtoken from 'jsonwebtoken';
 import config from '../config.js';
 import User from '../models/user.js';
 import { UserTokenForm } from '../types/user.js';
-import { generateDPoPKeyPair, createDPoPProof } from '../utils/dpop.js';
 
 const authRouter = express.Router();
 
-const OIDC_TOKEN_URL =
-  'https://courses.mooc.fi/api/v0/main-frontend/oauth/token';
-const OIDC_USERINFO_URL =
-  'https://courses.mooc.fi/api/v0/main-frontend/oauth/userinfo';
+let cachedConfig: oidc.Configuration | null = null;
+
+function createLoggingFetch(realFetch: typeof fetch): typeof fetch {
+  return async (input: URL | Request | string, init?: RequestInit) => {
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+    const method = init?.method ?? 'GET';
+    const headers: Record<string, string> = {};
+    if (init?.headers) {
+      if (init.headers instanceof Headers) {
+        init.headers.forEach((v, k) => { headers[k] = v; });
+      } else if (Array.isArray(init.headers)) {
+        for (const [k, v] of init.headers) headers[k] = String(v);
+      } else {
+        Object.assign(headers, init.headers);
+      }
+    }
+    let bodyLog: string;
+    if (init?.body == null) {
+      bodyLog = '(none)';
+    } else if (typeof init.body === 'string') {
+      bodyLog = init.body;
+    } else {
+      bodyLog = `(<${typeof init.body}>)`;
+    }
+    console.log('[OIDC REQUEST]', method, url);
+    console.log('[OIDC REQUEST HEADERS]', JSON.stringify(headers, null, 2));
+    console.log('[OIDC REQUEST BODY]', bodyLog);
+
+    const response = await realFetch(input, init);
+    const responseText = await response.text();
+    console.log('[OIDC RESPONSE]', response.status, response.statusText, url);
+    console.log('[OIDC RESPONSE HEADERS]', JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2));
+    console.log('[OIDC RESPONSE BODY]', responseText);
+
+    if (response.ok && responseText.trim().startsWith('{')) {
+      try {
+        const data = JSON.parse(responseText) as { id_token?: string };
+        if (data.id_token) {
+          const parts = data.id_token.split('.');
+          if (parts.length === 3) {
+            const payload = JSON.parse(
+              Buffer.from(parts[1], 'base64url').toString('utf8'),
+            ) as Record<string, unknown>;
+            console.log('[OIDC ID_TOKEN PAYLOAD]', JSON.stringify(payload, null, 2));
+          }
+        }
+      } catch {
+        // ignore parse errors
+      }
+    }
+
+    return new Response(responseText, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+    });
+  };
+}
+
+async function getOIDCConfig(): Promise<oidc.Configuration> {
+  if (cachedConfig) return cachedConfig;
+  const server = new URL(config.OIDC_ISSUER_URL);
+  const clientAuth = config.OIDC_CLIENT_SECRET
+    ? oidc.ClientSecretPost(config.OIDC_CLIENT_SECRET)
+    : oidc.None();
+  const options: oidc.DiscoveryRequestOptions = {
+    [oidc.customFetch]: createLoggingFetch(globalThis.fetch),
+  };
+  if (server.protocol === 'http:') {
+    options.execute = [oidc.allowInsecureRequests];
+  }
+  cachedConfig = await oidc.discovery(
+    server,
+    config.OIDC_CLIENT_ID,
+    undefined,
+    clientAuth,
+    options,
+  );
+  return cachedConfig;
+}
+
+function logOIDCError(error: unknown): void {
+  const err = error as Error & {
+    cause?: Record<string, unknown> | unknown;
+    status?: number;
+    error?: string;
+    error_description?: string;
+    code?: string;
+  };
+  console.error('OIDC error:', err.message);
+  if (err.name === 'ResponseBodyError') {
+    console.error('  Token endpoint error:', {
+      status: err.status,
+      error: err.error,
+      error_description: err.error_description,
+    });
+    return;
+  }
+  if (err.cause != null && typeof err.cause === 'object') {
+    const c = err.cause as Record<string, unknown>;
+    console.error('  cause (full):', JSON.stringify(c, null, 2));
+    for (const key of Object.getOwnPropertyNames(c)) {
+      console.error(`  cause.${key}:`, (c as Record<string, unknown>)[key]);
+    }
+    if (c.claim != null) console.error('  failing claim:', c.claim);
+    if (c.expected !== undefined) console.error('  expected:', c.expected);
+    if (c.actual !== undefined) console.error('  actual:', c.actual);
+    if (c.claims != null) console.error('  token claims:', JSON.stringify(c.claims, null, 2));
+    const nested = (c as { cause?: Record<string, unknown> }).cause;
+    if (nested != null && typeof nested === 'object') {
+      console.error('  cause.cause:', JSON.stringify(nested, null, 2));
+      if (nested.claim != null) console.error('  cause.cause.claim:', nested.claim);
+      if (nested.expected !== undefined) console.error('  cause.cause.expected:', nested.expected);
+      if (nested.claims != null) console.error('  cause.cause.claims:', JSON.stringify(nested.claims, null, 2));
+    }
+  }
+  if (err.code != null) console.error('  code:', err.code);
+}
 
 authRouter.post('/callback', async (req, res) => {
-  const { code, code_verifier, redirect_uri } = req.body;
+  const { code, code_verifier, redirect_uri, state } = req.body;
+
+  console.log('[AUTH CALLBACK] Incoming request body:', JSON.stringify({
+    code,
+    code_verifier,
+    redirect_uri,
+    state,
+  }, null, 2));
 
   if (!code || !code_verifier || !redirect_uri) {
     res.status(400).json({ error: 'Missing code, code_verifier, or redirect_uri' });
@@ -22,65 +142,61 @@ authRouter.post('/callback', async (req, res) => {
   }
 
   try {
-    const { privateKey, publicJwk } = await generateDPoPKeyPair();
+    const oidcConfig = await getOIDCConfig();
 
-    const tokenDPoPProof = await createDPoPProof(
-      privateKey, publicJwk, 'POST', OIDC_TOKEN_URL,
+    const callbackUrl = new URL(redirect_uri);
+    callbackUrl.searchParams.set('code', code);
+    if (state != null && state !== '') {
+      callbackUrl.searchParams.set('state', String(state));
+    }
+    console.log('[AUTH CALLBACK] Constructed callback URL for library:', callbackUrl.href);
+
+    const dpopKeyPair = await oidc.randomDPoPKeyPair('ES256');
+    const DPoP = oidc.getDPoPHandle(oidcConfig, dpopKeyPair);
+
+    const tokens = await oidc.authorizationCodeGrant(
+      oidcConfig,
+      callbackUrl,
+      {
+        pkceCodeVerifier: code_verifier,
+        expectedState: state != null && state !== '' ? state : undefined,
+      },
+      undefined,
+      { DPoP },
     );
 
-    const tokenParams: Record<string, string> = {
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri,
-      client_id: config.OIDC_CLIENT_ID,
-      code_verifier,
-    };
-    if (config.OIDC_CLIENT_SECRET) {
-      tokenParams.client_secret = config.OIDC_CLIENT_SECRET;
+    const accessToken = tokens.access_token;
+    if (!accessToken) {
+      res.status(502).json({ error: 'OIDC provider did not return an access token' });
+      return;
     }
 
-    const tokenResponse = await axios.post(
-      OIDC_TOKEN_URL,
-      new URLSearchParams(tokenParams),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          DPoP: tokenDPoPProof,
-        },
-      },
+    const userInfo = await oidc.fetchUserInfo(
+      oidcConfig,
+      accessToken,
+      oidc.skipSubjectCheck,
+      { DPoP },
     );
 
-    const { access_token } = tokenResponse.data;
-
-    const userinfoDPoPProof = await createDPoPProof(
-      privateKey, publicJwk, 'GET', OIDC_USERINFO_URL, access_token,
-    );
-
-    const userInfoResponse = await axios.get(OIDC_USERINFO_URL, {
-      headers: {
-        Authorization: `DPoP ${access_token}`,
-        DPoP: userinfoDPoPProof,
-      },
-    });
-
-    const { sub, name, email } = userInfoResponse.data;
+    const sub = userInfo.sub;
     if (!sub) {
       res.status(502).json({ error: 'OIDC provider did not return a subject identifier' });
       return;
     }
 
+    const name = userInfo.name ?? userInfo.email ?? sub;
+
     let user = await User.findOne({ where: { accelbyteUserId: sub } });
 
     if (!user) {
       user = await User.create({
-        displayName: name || email || sub,
+        displayName: name,
         accelbyteUserId: sub,
         isAdmin: false,
       });
     } else {
-      const updatedName = name || email;
-      if (updatedName && updatedName !== user.displayName) {
-        await user.update({ displayName: updatedName });
+      if (name !== user.displayName) {
+        await user.update({ displayName: name });
       }
     }
 
@@ -100,13 +216,8 @@ authRouter.post('/callback', async (req, res) => {
       id: user.id,
     });
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('OIDC token exchange failed:', error.response?.data || error.message);
-      res.status(502).json({ error: 'Authentication with OIDC provider failed' });
-      return;
-    }
-    console.error('Auth callback error:', error);
-    res.status(500).json({ error: 'Internal server error during authentication' });
+    logOIDCError(error);
+    res.status(502).json({ error: 'Authentication with OIDC provider failed' });
   }
 });
 

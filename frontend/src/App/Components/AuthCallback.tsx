@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { exchangeCode } from '../api/auth';
 import borealforest from '../../assets/HY_Serendip-BOREALFOREST.jpg';
@@ -26,8 +26,12 @@ const containerStyle: CSSProperties = {
 const AuthCallback: React.FC = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const exchanged = useRef(false);
 
   useEffect(() => {
+    if (exchanged.current) return;
+    exchanged.current = true;
+
     const handleCallback = async () => {
       const params = new URLSearchParams(window.location.search);
       const code = params.get('code');
@@ -59,7 +63,7 @@ const AuthCallback: React.FC = () => {
       const redirectUri = `${window.location.origin}/auth/callback`;
 
       try {
-        const data = await exchangeCode(code, codeVerifier, redirectUri);
+        const data = await exchangeCode(code, codeVerifier, redirectUri, returnedState);
 
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('displayName', data.displayName);

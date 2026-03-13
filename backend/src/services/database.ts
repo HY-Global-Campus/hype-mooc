@@ -19,11 +19,27 @@ User.hasOne(Course, { foreignKey: 'userId' });
 Course.belongsTo(User, { foreignKey: 'userId' });
 
 export const dbSync = async () => {
-  try {
-    await sequelize.sync({ force: false }); // Use force: false to avoid dropping tables
-    console.log("All models were synchronized successfully.");
-  } catch (error) {
-    console.error("Failed to synchronize database:", error);
+  const maxAttempts = 10;
+  const delayMs = 3000;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      console.log(`Attempting database connection (attempt ${attempt}/${maxAttempts})`);
+      await sequelize.authenticate();
+      await sequelize.sync({ force: false }); // Use force: false to avoid dropping tables
+      console.log('All models were synchronized successfully.');
+      return;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`Database sync attempt ${attempt} failed:`, message);
+
+      if (attempt === maxAttempts) {
+        throw error;
+      }
+
+      console.log(`Waiting ${delayMs}ms before next database sync attempt...`);
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
   }
 };
 

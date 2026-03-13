@@ -31,7 +31,7 @@ export async function createDPoPProof(
   publicJwk: jose.JWK,
   htm: string,
   htu: string,
-  accessToken?: string,
+  options?: { accessToken?: string; nonce?: string },
 ): Promise<string> {
   const payload: jose.JWTPayload = {
     jti: crypto.randomUUID(),
@@ -40,9 +40,13 @@ export async function createDPoPProof(
     iat: Math.floor(Date.now() / 1000),
   };
 
-  if (accessToken) {
-    const hash = crypto.createHash('sha256').update(accessToken).digest();
+  if (options?.accessToken) {
+    const hash = crypto.createHash('sha256').update(options.accessToken).digest();
     payload.ath = jose.base64url.encode(hash);
+  }
+
+  if (options?.nonce) {
+    payload.nonce = options.nonce;
   }
 
   return new jose.SignJWT(payload)

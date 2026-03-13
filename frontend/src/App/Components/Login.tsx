@@ -4,7 +4,7 @@ import { generatePKCE, generateRandomString } from '../utils/pkce';
 import borealforest from '../../assets/HY_Serendip-BOREALFOREST.jpg';
 
 const OIDC_AUTHORIZE_URL =
-  'https://courses.mooc.fi/api/v0/main-frontend/oauth/authorize';
+  'http://project-331.local/api/v0/main-frontend/oauth/authorize';
 
 const wrapperStyle: CSSProperties = {
   background: `url(${borealforest}) no-repeat center center fixed`,
