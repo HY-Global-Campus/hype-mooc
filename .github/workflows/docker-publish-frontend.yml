@@ -13,6 +13,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}-frontend
+  VITE_API_URL: https://hype-mooc-backend-gccluster.ext.ocp-prod-0.k8s.it.helsinki.fi
 
 jobs:
   build:
@@ -55,6 +56,8 @@ jobs:
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: ./frontend
+          build-args: |
+            VITE_API_URL=${{ env.VITE_API_URL }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

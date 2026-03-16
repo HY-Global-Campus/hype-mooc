@@ -40,7 +40,6 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ pages, currentPag
     <div className="nav-buttons">
       <button
         className="nav-btn nav-btn-prev"
-        style={{ color: pages[currentPage]?.color || 'black' }}
         onClick={goToPreviousPage}
         disabled={!canGoPrevious}
       >
@@ -48,7 +47,6 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ pages, currentPag
       </button>
       <button
         className="nav-btn nav-btn-next"
-        style={{ color: pages[currentPage]?.color || 'black' }}
         onClick={goToNextPage}
         disabled={!canGoNext}
       >
