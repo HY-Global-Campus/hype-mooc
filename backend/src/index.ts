@@ -11,7 +11,16 @@ import chatbotRouter from './controllers/chatbot.js';
 
 const app = express();
 
-app.use(cors());
+// CORS: allow browser clients (prod + local dev)
+app.use(cors({
+  origin: [
+    /^https:\/\/.*\.ext\.ocp-prod-0\.k8s\.it\.helsinki\.fi$/,
+    'http://localhost:5173',
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'DPoP'],
+}));
+app.options('*', cors());
 app.use(express.json());
 app.use('/auth', authRouter);
 app.use('/chatbot', authMiddleware, chatbotRouter)
@@ -47,7 +56,7 @@ app.get('/', authMiddleware, async (_, res) => {
   res.status(200).send('Success');
 });
 
-const PORT = process.env.port || 8080
+const PORT = Number(process.env.PORT) || 8080
 
 dbSync().then(() => {
   app.listen(PORT, () => {
