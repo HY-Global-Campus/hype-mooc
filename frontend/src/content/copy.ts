@@ -15,16 +15,18 @@ export const courseCopy = {
     },
     rightColumn: {
       title: 'Peer review criteria',
-      content: [
-        'This assignment will be peer reviewed, so to complete it, you need to submit a link to this canvas five times.',
+      intro: 'This assignment will be peer reviewed, so to complete it, you need to submit a link to this canvas five times.',
+      submissionList: [
         '1st time: submit in Chapter 1, after filling in Part 1',
         '2nd time: submit in Chapter 2, after filling in Part 2',
         '3rd time: submit in Chapter 3, after filling in Part 3',
         '4th time: submit in Chapter 4, after filling in Part 4.',
         '5th time: submit in Chapter 5, after filling in Part 5.',
+      ],
+      outro: [
         'For each submission, you will receive two anonymous reviews. You will also need to provide three reviews for other peers anonymously. The selection of the canvas that you are requested to peer review is done automatically. The peer review will be done using a Likert scale of 1 (Strongly disagree) to 5 (Strongly agree).',
-        'The peer review criteria for each submission can be seen further in this canvas.'
-      ]
+        'The peer review criteria for each submission can be seen further in this canvas.',
+      ],
     }
   },
   part1: {

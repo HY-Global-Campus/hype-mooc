@@ -15,15 +15,7 @@ const ShareCanvasLink: React.FC<ShareCanvasLinkProps> = ({ userId }) => {
     return `${window.location.origin}/view/${userId}`;
   }, [userId]);
 
-  const displayUrl = useMemo(() => {
-    if (!shareUrl) return '';
-    try {
-      const url = new URL(shareUrl);
-      return `${url.pathname}`;
-    } catch {
-      return shareUrl;
-    }
-  }, [shareUrl]);
+  const displayUrl = shareUrl;
 
   const copyToClipboard = async () => {
     if (!shareUrl) {

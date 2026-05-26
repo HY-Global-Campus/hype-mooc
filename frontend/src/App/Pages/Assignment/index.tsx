@@ -28,7 +28,13 @@ const AssignmentPage: React.FC = () => {
             </div>
             <div className="exercise-column">
               <h2 className="exercise-title">{rightColumn.title}</h2>
-              {rightColumn.content.map((paragraph, index) => (
+              <p className="exercise-description">{rightColumn.intro}</p>
+              <ol className="assignment-submission-list">
+                {rightColumn.submissionList.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ol>
+              {rightColumn.outro.map((paragraph, index) => (
                 <p key={index} className="exercise-description">
                   {paragraph}
                 </p>

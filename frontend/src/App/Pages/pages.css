@@ -51,6 +51,7 @@
   flex: 1;
   min-height: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* FrontPage */
@@ -108,6 +109,33 @@
 .assignment-page .exercise-description a {
   color: #000;
   text-decoration: underline;
+}
+
+.assignment-submission-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 20px 0;
+}
+
+.assignment-submission-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.6;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 16px;
+  color: #000;
+}
+
+.assignment-submission-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2c2c2c;
 }
 
 .end-page-title {
@@ -262,6 +290,7 @@
 .exercise-page {
   padding: 0 16px;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Tablet styles (≥ 512px) */
