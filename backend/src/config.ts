@@ -20,7 +20,7 @@ const config: Config = {
   OIDC_ISSUER_URL: (process.env.OIDC_ISSUER_URL || 'https://courses.mooc.fi/api/v0/main-frontend/oauth').trim(),
   OIDC_CLIENT_ID: process.env.OIDC_CLIENT_ID!.trim(),
   OIDC_CLIENT_SECRET: process.env.OIDC_CLIENT_SECRET?.trim() || '',
-  NODE_ENV: process.env.NODE_ENV || 'development',
+  NODE_ENV: process.env.NODE_ENV || 'production',
   DEV_AUTH_BYPASS: process.env.DEV_AUTH_BYPASS === 'true',
 };
 
