@@ -1,45 +1,74 @@
 import React, { useMemo } from 'react';
-import { useExerciseContext } from './ExerciseContext';
-import { exercisesMeta } from '../../../content/exercises';
-import { useLocation } from 'react-router-dom';
+import { useExerciseContext } from './useExerciseContext';
+import { useCurrentExerciseMeta } from './useCurrentExerciseMeta';
+import { ExerciseMeta } from '../../../content/exercises';
+import { CanvasExerciseId, getTableExerciseValue } from './exerciseDataHelpers';
+import { Course } from '../../api/courseService';
 import './exercises.css';
 
-const TableExercise: React.FC = () => {
+type TableExerciseProps = {
+  exerciseMeta?: ExerciseMeta;
+};
+
+const cellPlaceholder = (header: string) => `Enter ${header.toLowerCase()}…`;
+
+const TableExercise: React.FC<TableExerciseProps> = ({ exerciseMeta: metaOverride }) => {
   const { bookOne, onUpdateBookOne, readonly } = useExerciseContext();
-  const location = useLocation();
-  const meta = exercisesMeta.find(e => e.route === location.pathname);
-  if (!meta) return null;
+  const meta = useCurrentExerciseMeta(metaOverride);
+  const exerciseId = meta?.id as CanvasExerciseId | undefined;
 
-  const headers = meta.props?.headers ?? Array.from({ length: meta.props?.columns ?? 2 }, (_, i) => `Col ${i + 1}`);
-  const rows = meta.props?.rows ?? 3;
-  const subTitle = meta.props?.subTitle;
-  const description = meta.props?.description;
+  const headers =
+    meta?.props?.headers ??
+    Array.from({ length: meta?.props?.columns ?? 2 }, (_, i) => `Col ${i + 1}`);
+  const rows = meta?.props?.rows ?? 3;
+  const subTitle = meta?.props?.subTitle;
+  const description = meta?.props?.description;
 
-  const value: string[][] = (bookOne as any)?.exercises?.[meta.id]?.value ?? Array.from({ length: rows }, () => Array(headers.length).fill(''));
+  const storedValue = exerciseId && bookOne ? getTableExerciseValue(bookOne, exerciseId) : undefined;
+  const value: string[][] =
+    storedValue ?? Array.from({ length: rows }, () => Array(headers.length).fill(''));
 
   const onCellChange = useMemo(
     () => (r: number, c: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const copy = value.map(row => row.slice());
+      if (!exerciseId) return;
+      const copy = value.map((row) => row.slice());
       copy[r][c] = e.target.value;
-      onUpdateBookOne({
+      onUpdateBookOne((current: Course) => ({
+        ...current,
         exercises: {
-          ...(bookOne as any)?.exercises,
-          [meta.id]: { value: copy },
+          ...current.exercises,
+          [exerciseId]: { value: copy },
         },
-      } as any);
+      }));
     },
-    [value, bookOne, onUpdateBookOne, meta?.id]
+    [value, exerciseId, onUpdateBookOne]
   );
+
+  if (!meta) return null;
+
+  const colWidths =
+    headers.length === 4
+      ? ['28%', '24%', '24%', '24%']
+      : headers.length === 3
+        ? ['34%', '33%', '33%']
+        : headers.map(() => `${100 / headers.length}%`);
 
   return (
     <div className="exercise-content">
-      <div className="exercise-single-column">
+      <div className="exercise-single-column exercise-single-column--left">
         <div className="exercise-panel">
           <h2 className="exercise-title">{meta.title}</h2>
-          {subTitle && <h3 className="exercise-subtitle">{subTitle}</h3>}
+          {subTitle && subTitle !== meta.title && (
+            <h3 className="exercise-subtitle">{subTitle}</h3>
+          )}
           {description && <p className="exercise-description">{description}</p>}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <table className="table-exercise" style={{ flex: 1 }}>
+          <div className="table-exercise-wrapper">
+            <table className="table-exercise">
+              <colgroup>
+                {colWidths.map((width, i) => (
+                  <col key={i} style={{ width }} />
+                ))}
+              </colgroup>
               <thead>
                 <tr>
                   {headers.map((h, i) => (
@@ -50,9 +79,21 @@ const TableExercise: React.FC = () => {
               <tbody>
                 {Array.from({ length: rows }).map((_, r) => (
                   <tr key={r}>
-                    {headers.map((_, c) => (
+                    {headers.map((header, c) => (
                       <td key={c}>
-                        <input disabled={readonly} value={value?.[r]?.[c] ?? ''} onChange={onCellChange(r, c)} />
+                        {readonly ? (
+                          <span className={value?.[r]?.[c] ? '' : 'table-cell-empty'}>
+                            {value?.[r]?.[c] || '—'}
+                          </span>
+                        ) : (
+                          <input
+                            disabled={readonly}
+                            value={value?.[r]?.[c] ?? ''}
+                            onChange={onCellChange(r, c)}
+                            placeholder={cellPlaceholder(header)}
+                            aria-label={`${header}, row ${r + 1}`}
+                          />
+                        )}
                       </td>
                     ))}
                   </tr>
@@ -67,5 +108,3 @@ const TableExercise: React.FC = () => {
 };
 
 export default TableExercise;
-
-

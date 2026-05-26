@@ -67,11 +67,13 @@
 	box-shadow: none !important;
 }
 
-.react-chatbot-kit-chat-bot-message-arrow {
-	border-right: 10px solid #c9dedf !important;
-	border-top: 8px solid transparent !important;
-	border-bottom: 8px solid transparent !important;
-	left: -8px !important;
+.react-chatbot-kit-chat-bot-message-arrow,
+.react-chatbot-kit-chat-user-message-arrow {
+	display: none !important;
+}
+
+.react-chatbot-kit-chat-bot-message-container {
+	margin-left: 0 !important;
 }
 
 .react-chatbot-kit-chat-btn-send {

@@ -15,7 +15,7 @@ const mainStyle: React.CSSProperties = {
   minHeight: 0,
   height: '100%',
   overflow: 'auto',
-  paddingBottom: 'calc(var(--app-footer-height, 72px) + env(safe-area-inset-bottom, 0px))',
+  paddingBottom: 'calc(var(--app-footer-height, 72px) + 24px + env(safe-area-inset-bottom, 0px))',
 };
 
 interface AppLayoutProps {
@@ -35,7 +35,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, pages, currentPageIndex
       <main style={mainStyle}>
         {children}
       </main>
-      <footer ref={footerRef} className="app-footer">
+      <footer
+        ref={footerRef}
+        className={`app-footer${currentPageIndex === 0 ? ' app-footer--dark' : ''}`}
+      >
         <NavigationButtons pages={pages} currentPage={currentPageIndex} />
       </footer>
     </div>

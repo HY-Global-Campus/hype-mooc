@@ -10,20 +10,18 @@ const Part3Page: React.FC = () => {
       <Header />
       <div className="exercise-container">
         <div className="exercise-content">
-          <div className="exercise-single-column">
-            <div className="exercise-panel">
-              <h2 className="exercise-title" style={{ fontSize: '48px', marginBottom: '20px' }}>
-                {courseCopy.part3.title}
-              </h2>
-              <p className="exercise-description" style={{ fontSize: '20px' }}>
+          <div className="exercise-single-column exercise-single-column--left">
+            <div className="exercise-panel part-intro-panel">
+              <h2 className="exercise-title part-intro-title">{courseCopy.part3.title}</h2>
+              <p className="exercise-description part-intro-instruction">
                 {courseCopy.part3.instruction}
               </p>
               {courseCopy.part3.peerReviewCriteria?.length ? (
                 <>
-                  <h3 className="exercise-subtitle" style={{ fontSize: '24px', marginTop: '24px', marginBottom: '12px' }}>
+                  <h3 className="exercise-subtitle part-intro-subtitle">
                     Part 3 peer review criteria:
                   </h3>
-                  <ul className="exercise-list" style={{ fontSize: '18px', paddingLeft: '24px' }}>
+                  <ul className="part-peer-review-list">
                     {courseCopy.part3.peerReviewCriteria.map((criterion, i) => (
                       <li key={i}>{criterion}</li>
                     ))}

@@ -38,20 +38,24 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ pages, currentPag
 
   return (
     <div className="nav-buttons">
-      <button
-        className="nav-btn nav-btn-prev"
-        onClick={goToPreviousPage}
-        disabled={!canGoPrevious}
-      >
-        Previous
-      </button>
-      <button
-        className="nav-btn nav-btn-next"
-        onClick={goToNextPage}
-        disabled={!canGoNext}
-      >
-        Next
-      </button>
+      {canGoPrevious && (
+        <button
+          type="button"
+          className="nav-btn"
+          onClick={goToPreviousPage}
+        >
+          Previous
+        </button>
+      )}
+      {canGoNext && (
+        <button
+          type="button"
+          className="nav-btn"
+          onClick={goToNextPage}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };

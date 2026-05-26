@@ -1,65 +1,56 @@
 import React, { useCallback } from 'react';
-import { useExerciseContext } from './ExerciseContext';
-import { exercisesMeta } from '../../../content/exercises';
-import { useLocation } from 'react-router-dom';
+import { useExerciseContext } from './useExerciseContext';
+import { ExerciseMeta } from '../../../content/exercises';
+import { useCurrentExerciseMeta } from './useCurrentExerciseMeta';
+import {
+  getFieldDescription,
+  getFieldDisplayLabel,
+  getFieldPlaceholder,
+} from '../../../content/fieldCopy';
 import ChatBot from '../ChatBot';
+import { CanvasExerciseId, getTwoColumnFieldMap } from './exerciseDataHelpers';
+import { Course } from '../../api/courseService';
 
-const fieldCopy: Record<string, { title: string; description: string; placeholder: string }> = {
-  ilosBeforeAI: {
-    title: '1. ILOs before AI',
-    description:
-      'What are the ILOs of your course? Define 3 to 5 ILOs. If you are developing an existing course, develop them further. If you are working with a new course, formulate the ILOs.',
-    placeholder: 'Type your answer here max 150 words',
-  },
-  ilosAfterAI: {
-    title: '2. ILOs after AI (final ILOs)',
-    description:
-      `Ask the Chatbot to give you feedback about your ILOs. Start by using the following prompt: "Please comment how the intended learning outcomes of my course could be improved. Please make sure that my intended learning outcomes use the following structure: Upon completing the course + student is able to + Bloom's taxonomy action verb + object and context. Give suggestions for the Bloom's taxonomy action verbs. Next. I will paste the text that you should comment." After the feedback, adjust your ILOs if needed.`,
-    placeholder: 'Type your answer here max 150 words',
-  },
-  argueChoice: {
-    title: '3. Argue your choice of the final ILOs and reflect on the use of AI',
-    description:
-      'Remember to be critical when considering AI based feedback. Reflect on the feedback given by AI and justify your choice of ILOs.',
-    placeholder: 'Type your answer here max 150 words',
-  },
+type LearningObjectivesExerciseProps = {
+  exerciseMeta?: ExerciseMeta;
 };
 
-const LearningObjectivesExercise: React.FC = () => {
+const LearningObjectivesExercise: React.FC<LearningObjectivesExerciseProps> = ({
+  exerciseMeta: metaOverride,
+}) => {
   const { bookOne, onUpdateBookOne, readonly } = useExerciseContext();
-  const location = useLocation();
-  const meta = exercisesMeta.find(e => e.route === location.pathname);
+  const meta = useCurrentExerciseMeta(metaOverride);
 
-  if (!meta) return null;
+  const exerciseId = meta?.id as CanvasExerciseId | undefined;
 
-  const getFieldValue = useCallback((fieldLabel: string) => {
-    if (!bookOne || !meta?.id) return '';
-    const exerciseData = (bookOne as any).exercises?.[meta.id];
-    return exerciseData?.[fieldLabel] || '';
-  }, [bookOne, meta?.id]);
+  const getFieldValue = useCallback(
+    (fieldLabel: string) => {
+      if (!bookOne || !exerciseId) return '';
+      return getTwoColumnFieldMap(bookOne, exerciseId)[fieldLabel] ?? '';
+    },
+    [bookOne, exerciseId]
+  );
 
-  const updateFieldValue = useCallback((fieldLabel: string, value: string) => {
-    if (!onUpdateBookOne || !meta?.id) return;
-    
-    // Use a function to get the current state instead of relying on stale closure
-    onUpdateBookOne((currentBookOne: any) => {
-      if (!currentBookOne) return currentBookOne;
-      
-      const currentData = currentBookOne.exercises?.[meta.id] || {};
-      const updatedData = {
-        ...currentData,
-        [fieldLabel]: value
-      };
+  const updateFieldValue = useCallback(
+    (fieldLabel: string, value: string) => {
+      if (!onUpdateBookOne || !exerciseId) return;
 
-      return {
-        ...currentBookOne,
-        exercises: {
-          ...currentBookOne.exercises,
-          [meta.id]: updatedData
-        }
-      };
-    });
-  }, [onUpdateBookOne, meta?.id]);
+      onUpdateBookOne((currentBookOne: Course) => {
+        const currentData = getTwoColumnFieldMap(currentBookOne, exerciseId);
+        return {
+          ...currentBookOne,
+          exercises: {
+            ...currentBookOne.exercises,
+            [exerciseId]: {
+              ...currentData,
+              [fieldLabel]: value,
+            },
+          },
+        };
+      });
+    },
+    [onUpdateBookOne, exerciseId]
+  );
 
   if (!meta?.props?.leftColumn || !meta?.props?.rightColumn) {
     return <div>Invalid exercise configuration</div>;
@@ -68,67 +59,117 @@ const LearningObjectivesExercise: React.FC = () => {
   const { leftColumn, rightColumn } = meta.props;
 
   return (
-    <div className="exercise-content">
+    <div className="exercise-content learning-objectives-page">
+      {readonly && meta.title && (
+        <h2 className="exercise-title" style={{ marginBottom: '24px' }}>
+          {meta.title}
+        </h2>
+      )}
       <div className="exercise-two-column">
         <div className="exercise-column">
           <h2 className="exercise-title">{leftColumn.title}</h2>
-          {leftColumn.fields.map((field, index) => (
-            <div key={index} style={{ marginBottom: 'clamp(16px, 2vh, 28px)' }}>
-              <label style={{
-                display: 'block', 
-                fontWeight: 'bold', 
-                marginBottom: '8px',
-                fontFamily: "'Gotham Narrow', Arial, sans-serif",
-                fontSize: '16px',
-                color: '#000'
-              }}>
-                {fieldCopy[field.label]?.title ?? field.label}
-              </label>
-              <p
-                className="exercise-description"
-                style={{
-                  marginBottom: '12px',
-                  lineHeight: '1.5',
-                  fontSize: '16px',
-                  color: '#000',
-                }}
-              >
-                {fieldCopy[field.label]?.description ?? field.placeholder}
-              </p>
-              <textarea
-                className="exercise-textarea"
-                value={getFieldValue(field.label)}
-                onChange={(e) => updateFieldValue(field.label, e.target.value)}
-                disabled={readonly}
-                placeholder={fieldCopy[field.label]?.placeholder ?? field.placeholder}
-                required={field.required}
-                rows={6}
-                style={{
-                  width: '100%',
-                  border: '1px solid #000',
-                  borderRadius: '8px',
-                  padding: '12px 16px',
-                  fontSize: '16px',
-                  fontFamily: "'Gotham Narrow', Arial, sans-serif",
-                  background: 'white',
-                  boxSizing: 'border-box',
-                  resize: 'vertical',
-                  minHeight: 'clamp(110px, 14vh, 180px)'
-                }}
-              />
-            </div>
-          ))}
+          {leftColumn.fields.map((field, index) => {
+            const description = getFieldDescription(meta.id, field.label);
+            const displayLabel = getFieldDisplayLabel(meta.id, field.label);
+            const placeholder = getFieldPlaceholder(meta.id, field.label, field.placeholder);
+            const value = getFieldValue(field.label);
+
+            if (readonly) {
+              return (
+                <div key={index} style={{ marginBottom: 'clamp(16px, 2vh, 28px)' }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontWeight: 'bold',
+                      marginBottom: '8px',
+                      fontFamily: "'Gotham Narrow', Arial, sans-serif",
+                      fontSize: '16px',
+                      color: '#000',
+                    }}
+                  >
+                    {displayLabel}
+                  </label>
+                  {description && (
+                    <p
+                      className="exercise-description"
+                      style={{ marginBottom: '12px', lineHeight: '1.5', fontSize: '16px' }}
+                    >
+                      {description}
+                    </p>
+                  )}
+                  <div className={`readonly-text${value ? '' : ' readonly-text--empty'}`}>
+                    {value || 'No answer provided'}
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div key={index} style={{ marginBottom: 'clamp(16px, 2vh, 28px)' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    fontWeight: 'bold',
+                    marginBottom: '8px',
+                    fontFamily: "'Gotham Narrow', Arial, sans-serif",
+                    fontSize: '16px',
+                    color: '#000',
+                  }}
+                >
+                  {displayLabel}
+                </label>
+                <p
+                  className="exercise-description"
+                  style={{
+                    marginBottom: '12px',
+                    lineHeight: '1.5',
+                    fontSize: '16px',
+                    color: '#000',
+                  }}
+                >
+                  {description}
+                </p>
+                <textarea
+                  className="exercise-textarea"
+                  value={value}
+                  onChange={(e) => updateFieldValue(field.label, e.target.value)}
+                  disabled={readonly}
+                  placeholder={placeholder}
+                  required={field.required}
+                  rows={6}
+                  style={{
+                    width: '100%',
+                    border: '1px solid #000',
+                    borderRadius: '8px',
+                    padding: '12px 16px',
+                    fontSize: '16px',
+                    fontFamily: "'Gotham Narrow', Arial, sans-serif",
+                    background: 'white',
+                    boxSizing: 'border-box',
+                    resize: 'vertical',
+                    minHeight: 'clamp(110px, 14vh, 180px)',
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
         <div className="exercise-column">
           <h2 className="exercise-title learning-objectives-chat-title">{rightColumn.title}</h2>
-          <div className="learning-objectives-chat-shell">
-            <div className="learning-objectives-chat-label">
-              Conversation with Chatbot
+          {readonly ? (
+            <div className="learning-objectives-chat-shell learning-objectives-chat-shell--readonly">
+              <p className="learning-objectives-chat-readonly-note">
+                Chat conversations are not included in the shared view.
+              </p>
             </div>
-            <div className="learning-objectives-chat-body">
-              <ChatBot />
+          ) : (
+            <div className="learning-objectives-chat-shell">
+              <div className="learning-objectives-chat-label">Conversation with Chatbot</div>
+              <div className="learning-objectives-chat-body">
+                <ChatBot />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

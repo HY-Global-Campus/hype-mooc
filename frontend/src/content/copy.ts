@@ -7,14 +7,16 @@ export const courseCopy = {
     title: 'Course design canvas',
     leftColumn: {
       title: 'What is this assignment?',
-      content: [
-        'In this exercise you\'ll start creating a course plan in canvas form. You will develop your course plan further in the next course (Constructive alignment in course design, 2 ECTS course). You can select an existing course or a completely new course that you could be teaching as the object of your course design assignment. You may choose a course from university curricula (e.g. see link to University of Helsinki\'s courses) or think about your own course that you\'re currently teaching.'
-      ]
+      intro:
+        'In this exercise you\'ll start creating a course plan in canvas form. You will develop your course plan further in the next course (Constructive alignment in course design, 2 ECTS course). You can select an existing course or a completely new course that you could be teaching as the object of your course design assignment. You may choose a course from university curricula (',
+      linkLabel: 'University of Helsinki courses',
+      linkHref: 'https://studies.helsinki.fi/courses',
+      outro: ') or think about your own course that you\'re currently teaching.',
     },
     rightColumn: {
       title: 'Peer review criteria',
       content: [
-        'This assignment will be peer reviewed, so to complete it, you need to submit a link to this canvas four times.',
+        'This assignment will be peer reviewed, so to complete it, you need to submit a link to this canvas five times.',
         '1st time: submit in Chapter 1, after filling in Part 1',
         '2nd time: submit in Chapter 2, after filling in Part 2',
         '3rd time: submit in Chapter 3, after filling in Part 3',
@@ -59,8 +61,8 @@ export const courseCopy = {
     title: 'Part 4',
     instruction: 'Complete this part, then go to the last page of the canvas to generate a link. You can add the link to the peer review exercise in Chapter 4, Topic 2.',
     peerReviewCriteria: [
-      'The teaching methods comprehensively applies the principles of constructively aligned teaching to the discipline/subject.',
-      'The teaching methods effectively supports students in active learning.'
+      'The teaching methods comprehensively apply the principles of constructively aligned teaching to the discipline/subject.',
+      'The teaching methods effectively support students in active learning.'
     ]
   },
   part5: {

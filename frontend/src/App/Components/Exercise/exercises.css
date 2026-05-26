@@ -202,6 +202,20 @@ Chapter4Banner
   margin: 0;
 }
 
+.course-header-star-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  color: inherit;
+}
+
+.course-header-star-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
 .course-header-icon {
   width: 24px;
   height: 24px;
@@ -322,7 +336,23 @@ Chapter4Banner
 .table-exercise th {
   background-color: #f5f5f5;
   font-weight: bold;
-  font-size: 16px;
+  font-size: clamp(13px, 1.5vw, 16px);
+  white-space: normal;
+  vertical-align: bottom;
+}
+
+.table-exercise-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-exercise.table-exercise {
+  table-layout: fixed;
+}
+
+.table-cell-empty {
+  color: #888;
+  font-style: italic;
 }
 
 .table-exercise input {
@@ -338,9 +368,22 @@ Chapter4Banner
   white-space: pre-wrap;
   line-height: 1.5;
   padding: 16px;
+  min-height: 48px;
   background-color: #f9f9f9;
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-family: 'Gotham Narrow', Arial, sans-serif;
+}
+
+.readonly-text--empty {
+  color: #666;
+  font-style: italic;
+}
+
+.exercise-textarea--compact {
+  min-height: 120px;
+  max-height: 200px;
+  resize: none;
 }
 
 /* Exercise Subtitle */
@@ -362,9 +405,51 @@ Chapter4Banner
   text-align: center;
 }
 
+.exercise-single-column--left {
+  text-align: left;
+}
+
+.exercise-single-column--left .exercise-panel {
+  text-align: left;
+}
+
 .exercise-single-column .exercise-panel {
   max-width: 800px;
   width: 100%;
+}
+
+.part-intro-panel {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.part-intro-title {
+  font-size: clamp(32px, 5vw, 48px);
+  margin-bottom: 20px;
+}
+
+.part-intro-instruction {
+  font-size: 20px;
+}
+
+.part-intro-subtitle {
+  font-size: 24px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.part-peer-review-list {
+  font-size: 18px;
+  list-style-position: outside;
+  padding-left: 1.25rem;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.part-peer-review-list li {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
 }
 
 /* Two Column Layout */
@@ -374,6 +459,20 @@ Chapter4Banner
   gap: clamp(20px, 3vw, 36px);
   margin-bottom: 0;
   align-items: start;
+}
+
+.exercise-two-column--single {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+}
+
+.exercise-column-header-spacer {
+  min-height: 56px;
+  margin-bottom: 20px;
+}
+
+.learning-objectives-page .exercise-two-column {
+  padding-bottom: 32px;
 }
 
 .exercise-column {
@@ -392,13 +491,27 @@ Chapter4Banner
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
-  height: 620px;
+  height: clamp(320px, 50vh, 620px);
   min-height: 0;
   background: #f7f8f8;
   border: 1px solid #8f9597;
   border-radius: 0;
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.learning-objectives-chat-shell--readonly {
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.learning-objectives-chat-readonly-note {
+  margin: 0;
+  text-align: center;
+  color: #444;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .learning-objectives-chat-label {

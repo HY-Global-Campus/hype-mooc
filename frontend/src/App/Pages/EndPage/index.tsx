@@ -13,32 +13,14 @@ const EndPage: React.FC = () => {
       <Header />
       <div className="exercise-container">
         <div className="exercise-content">
-          <div className="exercise-single-column">
-            <div className="exercise-panel">
-              <h2 className="exercise-title" style={{
-                fontSize: '48px',
-                marginBottom: '20px',
-                textAlign: 'center',
-                fontWeight: 'bold',
-                color: '#000',
-              }}>
-                Share your course canvas
-              </h2>
-              <p className="exercise-description" style={{
-                fontSize: '20px',
-                textAlign: 'center',
-                color: '#000',
-                marginBottom: '16px',
-              }}>
+          <div className="exercise-single-column exercise-single-column--left">
+            <div className="exercise-panel part-intro-panel end-page-panel">
+              <h2 className="exercise-title end-page-title">Share your course canvas</h2>
+              <p className="exercise-description end-page-subtitle">
                 Share this view-only link
               </p>
               <ShareCanvasLink userId={userId} />
-              <p className="exercise-description" style={{
-                fontSize: '16px',
-                textAlign: 'center',
-                color: '#000',
-                marginTop: '24px',
-              }}>
+              <p className="exercise-description end-page-message">
                 {courseCopy.endpage.message}
               </p>
             </div>
@@ -50,4 +32,3 @@ const EndPage: React.FC = () => {
 };
 
 export default EndPage;
-

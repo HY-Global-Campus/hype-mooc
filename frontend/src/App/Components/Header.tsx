@@ -1,12 +1,20 @@
-import '../Components/components.css'
+import { Link } from 'react-router-dom';
+import '../Components/components.css';
 
 const Header: React.FC = () => {
   return (
     <header className="course-header">
       <h1>Course design canvas</h1>
-      <svg className="course-header-icon" viewBox="0 0 24 24">
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-      </svg>
+      <Link
+        to="/assignment"
+        className="course-header-star-link"
+        aria-label="About this assignment"
+        title="About this assignment"
+      >
+        <svg className="course-header-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+      </Link>
     </header>
   );
 };

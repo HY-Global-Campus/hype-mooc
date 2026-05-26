@@ -1,49 +1,87 @@
 import React, { useMemo } from 'react';
-import { useExerciseContext } from './ExerciseContext';
-import { exercisesMeta } from '../../../content/exercises';
-import { useLocation } from 'react-router-dom';
+import { useExerciseContext } from './useExerciseContext';
+import { ExerciseMeta } from '../../../content/exercises';
+import { useCurrentExerciseMeta } from './useCurrentExerciseMeta';
+import { CanvasExerciseId, getTextExerciseValue } from './exerciseDataHelpers';
+import { Course } from '../../api/courseService';
 import './exercises.css';
 
-const TextExercise: React.FC = () => {
+type TextExerciseProps = {
+  exerciseMeta?: ExerciseMeta;
+};
+
+const TextExercise: React.FC<TextExerciseProps> = ({ exerciseMeta: metaOverride }) => {
   const { bookOne, onUpdateBookOne, readonly } = useExerciseContext();
-  const location = useLocation();
-  const meta = exercisesMeta.find(e => e.route === location.pathname);
+  const meta = useCurrentExerciseMeta(metaOverride);
+  const exerciseId = meta?.id as CanvasExerciseId | undefined;
+
+  const value =
+    exerciseId && bookOne ? getTextExerciseValue(bookOne, exerciseId) : '';
+
+  const onChange = useMemo(
+    () => (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      if (!exerciseId) return;
+      onUpdateBookOne((current: Course) => ({
+        ...current,
+        exercises: {
+          ...current.exercises,
+          [exerciseId]: { value: e.target.value },
+        },
+      }));
+    },
+    [onUpdateBookOne, exerciseId]
+  );
 
   if (!meta) return null;
 
-  const value: string = (bookOne as any)?.exercises?.[meta.id]?.value ?? '';
-  const placeholder = meta.props?.placeholder ?? '';
-
-  const onChange = useMemo(() => (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    onUpdateBookOne({
-      exercises: {
-        ...(bookOne as any)?.exercises,
-        [meta.id]: { value: e.target.value },
-      },
-    } as any);
-  }, [bookOne, onUpdateBookOne, meta?.id]);
-
   const multiline = !!meta.props?.multiline;
+  const compact = !!meta.props?.compact;
+  const questionLabel = meta.props?.questionLabel;
+  const placeholder = meta.props?.placeholder ?? 'Type your answer here';
+
+  if (readonly) {
+    return (
+      <div className="exercise-content">
+        <div className="exercise-panel">
+          <h2 className="exercise-title">{meta.title}</h2>
+          {questionLabel && (
+            <p className="exercise-description" style={{ marginBottom: '12px' }}>
+              {questionLabel}
+            </p>
+          )}
+          <div className={`readonly-text${value ? '' : ' readonly-text--empty'}`}>
+            {value || 'No answer provided'}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="exercise-content">
       <div className="exercise-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <h2 className="exercise-title">{meta.title}</h2>
+        {questionLabel && (
+          <p className="exercise-description" style={{ marginBottom: '12px' }}>
+            {questionLabel}
+          </p>
+        )}
         {multiline ? (
-          <textarea 
-            className="exercise-textarea"
-            value={value} 
-            onChange={onChange} 
-            disabled={readonly} 
+          <textarea
+            className={`exercise-textarea${compact ? ' exercise-textarea--compact' : ''}`}
+            value={value}
+            onChange={onChange}
+            disabled={readonly}
             placeholder={placeholder}
-            style={{ flex: 1 }}
+            rows={compact ? 5 : undefined}
+            style={compact ? { flex: 'none' } : { flex: 1 }}
           />
         ) : (
-          <input 
+          <input
             className="exercise-input"
-            value={value} 
-            onChange={onChange} 
-            disabled={readonly} 
+            value={value}
+            onChange={onChange}
+            disabled={readonly}
             placeholder={placeholder}
           />
         )}
@@ -53,5 +91,3 @@ const TextExercise: React.FC = () => {
 };
 
 export default TextExercise;
-
-

@@ -9,7 +9,7 @@ const OIDC_AUTHORIZE_URL =
   'https://courses.mooc.fi/api/v0/main-frontend/oauth/authorize';
 
 const wrapperStyle: CSSProperties = {
-  background: `url(${borealforest}) no-repeat center center fixed`,
+  background: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${borealforest}) no-repeat center center fixed`,
   backgroundSize: 'cover',
   display: 'flex',
   justifyContent: 'center',
@@ -21,11 +21,14 @@ const wrapperStyle: CSSProperties = {
 };
 
 const containerStyle: CSSProperties = {
-  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+  backdropFilter: 'blur(4px)',
   padding: '60px',
   borderRadius: '10px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   textAlign: 'center',
+  position: 'relative',
+  zIndex: 1,
 };
 
 const buttonStyle: CSSProperties = {
@@ -65,10 +68,6 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [devLoading, setDevLoading] = useState(false);
 
-  if (DEMO_MODE) {
-    return <Navigate to="/" replace />;
-  }
-
   const handleLogin = useCallback(async () => {
     const { codeVerifier, codeChallenge } = await generatePKCE();
     const state = generateRandomString(16);
@@ -91,6 +90,10 @@ const Login: React.FC = () => {
 
     window.location.href = `${OIDC_AUTHORIZE_URL}?${params}`;
   }, [from]);
+
+  if (DEMO_MODE) {
+    return <Navigate to="/" replace />;
+  }
 
   const startDevLogin = async () => {
     setError('');
