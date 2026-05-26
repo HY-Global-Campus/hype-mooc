@@ -1,7 +1,7 @@
 import express from 'express';
 import * as oidc from 'openid-client';
 import jsonwebtoken from 'jsonwebtoken';
-import config from '../config.js';
+import config, { isDevAuthBypassEnabled } from '../config.js';
 import User from '../models/user.js';
 import { UserTokenForm } from '../types/user.js';
 
@@ -125,6 +125,46 @@ function logOIDCError(error: unknown): void {
   }
   if (err.code != null) console.error('  code:', err.code);
 }
+
+const DEV_USER_ID = 'dev-local';
+
+authRouter.post('/dev', async (req, res) => {
+  if (!isDevAuthBypassEnabled()) {
+    res.status(404).end();
+    return;
+  }
+
+  try {
+    let user = await User.findOne({ where: { accelbyteUserId: DEV_USER_ID } });
+
+    if (!user) {
+      user = await User.create({
+        displayName: 'Dev User',
+        accelbyteUserId: DEV_USER_ID,
+        isAdmin: false,
+      });
+    }
+
+    const userForToken: UserTokenForm = {
+      displayName: user.displayName,
+      id: user.id.toString(),
+      isAdmin: user.isAdmin || false,
+    };
+
+    const token = jsonwebtoken.sign(userForToken, config.JWT_SECRET, {
+      expiresIn: '24h',
+    });
+
+    res.json({
+      token,
+      displayName: user.displayName,
+      id: user.id,
+    });
+  } catch (error) {
+    logOIDCError(error);
+    res.status(500).json({ error: 'Dev login failed' });
+  }
+});
 
 authRouter.post('/callback', async (req, res) => {
   const { code, code_verifier, redirect_uri, state } = req.body;
