@@ -6,7 +6,7 @@
   ],
   "service": "dev",
   "runServices": ["db", "dev"],
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspace/hype-mooc",
   "shutdownAction": "stopCompose",
   "postStartCommand": "bash .devcontainer/post-start.sh",
   "forwardPorts": [5173, 8080, 5432],

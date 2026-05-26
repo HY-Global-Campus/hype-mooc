@@ -51,6 +51,7 @@ export DATABASE_URL="${DATABASE_URL:-postgres://user:password@db:5432/mydatabase
 export JWT_SECRET="${JWT_SECRET:-developmentsecret}"
 export NODE_ENV=development
 export DEV_AUTH_BYPASS=true
+export VITE_DEV_AUTH_BYPASS=true
 export GCAI_URL="${GCAI_URL:-http://127.0.0.1:1}"
 export GCAI_TOKEN="${GCAI_TOKEN:-dev}"
 export OIDC_CLIENT_ID="${OIDC_CLIENT_ID:-dev}"
