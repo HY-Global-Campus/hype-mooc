@@ -175,8 +175,17 @@ Main backend routes:
 - `GET /course/share/:userid`: public read-only course share endpoint
 - `/course/*`: authenticated course CRUD routes
 
+## Dev Container (Cursor / VS Code)
+
+Reopen the repository in a Dev Container. `post-start` runs the frontend and backend inside the workspace container and bridges PostgreSQL to `localhost:5432`, so IDE port forwarding on **5173**, **8080**, and **5432** works with the built-in browser preview.
+
+After changing `.devcontainer/` files, run **Dev Containers: Rebuild Container**. Optional chatbot credentials: set `GCAI_URL` and `GCAI_TOKEN` in a root `.env` or your environment before rebuilding.
+
 ## Troubleshooting
 
+### Dev Container preview shows "Connection Failed"
+
+The dev servers must be running in the workspace container. Check **Ports** for a process on 5173, or run `bash .devcontainer/post-start.sh` in a terminal. Rebuild the container if the problem persists.
 
 ### Share page loads but no data appears
 

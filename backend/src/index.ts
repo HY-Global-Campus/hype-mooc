@@ -11,12 +11,17 @@ import chatbotRouter from './controllers/chatbot.js';
 
 const app = express();
 
-// CORS: allow browser clients (prod + local dev)
+// CORS: allow browser clients (prod + local dev, including forwarded IDE ports)
+const corsOrigins: cors.CorsOptions['origin'] =
+  process.env.NODE_ENV === 'development'
+    ? [/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/]
+    : [
+        /^https:\/\/.*\.ext\.ocp-prod-0\.k8s\.it\.helsinki\.fi$/,
+        'http://localhost:5173',
+      ];
+
 app.use(cors({
-  origin: [
-    /^https:\/\/.*\.ext\.ocp-prod-0\.k8s\.it\.helsinki\.fi$/,
-    'http://localhost:5173',
-  ],
+  origin: corsOrigins,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'DPoP'],
 }));

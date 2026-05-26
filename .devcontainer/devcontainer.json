@@ -5,9 +5,10 @@
     "docker-compose.yml"
   ],
   "service": "dev",
-  "runServices": ["db", "app", "frontend", "dev"],
+  "runServices": ["db", "dev"],
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
+  "postStartCommand": "bash .devcontainer/post-start.sh",
   "forwardPorts": [5173, 8080, 5432],
   "portsAttributes": {
     "5173": {
