@@ -14,6 +14,7 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}-frontend
   VITE_API_URL: https://hype-mooc-backend-gccluster.ext.ocp-prod-0.k8s.it.helsinki.fi
+  VITE_OIDC_CLIENT_ID: hype-mooc
 
 jobs:
   build:
@@ -58,6 +59,7 @@ jobs:
           context: ./frontend
           build-args: |
             VITE_API_URL=${{ env.VITE_API_URL }}
+            VITE_OIDC_CLIENT_ID=${{ env.VITE_OIDC_CLIENT_ID }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
