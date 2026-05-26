@@ -62,9 +62,13 @@ const getCompletion = async (data: CompletionRequest): Promise<CompletionReponse
 const chatbotRouter = express.Router();
 
 chatbotRouter.post('/completion', async (req, res) => {
-    const requestData: CompletionRequest = req.body;
-    const response = await getCompletion(requestData);
-    res.json(response);
+    try {
+        const requestData: CompletionRequest = req.body;
+        const response = await getCompletion(requestData);
+        res.json(response);
+    } catch (error) {
+        res.status(502).json({ error: 'Chatbot service unavailable' });
+    }
 })
 
 
