@@ -22,11 +22,27 @@
   }
 }
 
+.app-footer--dark {
+  background: rgba(44, 44, 44, 0.92);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.app-footer--dark .nav-btn {
+  background: rgba(60, 60, 60, 0.95);
+  border-color: rgba(255, 255, 255, 0.85);
+  color: #fff;
+}
+
 /* Page structure - natural height; main in AppLayout scrolls */
 .page-with-header {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: min(100%, calc(var(--app-height, 100dvh) - var(--app-footer-height, 72px)));
+  background: white;
+}
+
+.exercise-single-column .exercise-panel {
+  padding-bottom: 24px;
 }
 
 .page-with-header .exercise-container,
@@ -36,6 +52,7 @@
   flex: 1;
   min-height: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* FrontPage */
@@ -74,9 +91,149 @@
 }
 
 .front-logo {
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: auto;
+  max-height: 80px;
   margin-bottom: 20px;
+  object-fit: contain;
+}
+
+.assignment-page-content {
+  padding-top: clamp(20px, 3vw, 40px);
+  padding-bottom: clamp(20px, 3vw, 40px);
+}
+
+.assignment-page .exercise-two-column {
+  text-align: left;
+}
+
+.assignment-page .exercise-description a {
+  color: #000;
+  text-decoration: underline;
+}
+
+.assignment-submission-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 20px 0;
+}
+
+.assignment-submission-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.6;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 16px;
+  color: #000;
+}
+
+.assignment-submission-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2c2c2c;
+}
+
+.end-page-title {
+  font-size: clamp(28px, 4vw, 40px);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.end-page-subtitle {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.end-page-panel {
+  text-align: center;
+}
+
+.end-page-share {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.end-page-completion {
+  margin-top: clamp(40px, 6vh, 56px);
+  padding: clamp(24px, 4vw, 36px) clamp(24px, 5vw, 48px);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #f0f2f3;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.end-page-completion-heading {
+  margin: 0 0 12px;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-weight: bold;
+  line-height: 1.3;
+  color: #000;
+  text-align: center;
+}
+
+.end-page-completion-text {
+  margin: 0;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+
+.view-page-toc {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #ddd;
+  padding: 16px 0;
+  margin-bottom: 24px;
+}
+
+.view-page-toc-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #444;
+}
+
+.view-page-toc-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.view-page-toc-list a {
+  color: #000;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.view-exercise-section {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #eee;
+}
+
+.view-exercise-section:last-child {
+  border-bottom: none;
 }
 
 .front-university {
@@ -165,6 +322,8 @@
 .exercise-page {
   padding: 0 16px;
   max-width: 100%;
+  box-sizing: border-box;
+  background: white;
 }
 
 /* Tablet styles (≥ 512px) */

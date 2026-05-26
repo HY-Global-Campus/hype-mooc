@@ -4,23 +4,37 @@ import { courseCopy } from '../../../content/copy';
 import '../pages.css';
 
 const AssignmentPage: React.FC = () => {
+  const { leftColumn, rightColumn } = courseCopy.assignment;
+
   return (
-    <div className="page-with-header">
+    <div className="page-with-header assignment-page">
       <Header />
       <div className="exercise-container">
-        <div className="exercise-content">
+        <div className="exercise-content assignment-page-content">
           <div className="exercise-two-column">
             <div className="exercise-column">
-              <h2 className="exercise-title">{courseCopy.assignment.leftColumn.title}</h2>
-              {courseCopy.assignment.leftColumn.content.map((paragraph, index) => (
-                <p key={index} className="exercise-description">
-                  {paragraph}
-                </p>
-              ))}
+              <h2 className="exercise-title">{leftColumn.title}</h2>
+              <p className="exercise-description">
+                {leftColumn.intro}
+                <a
+                  href={leftColumn.linkHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {leftColumn.linkLabel}
+                </a>
+                {leftColumn.outro}
+              </p>
             </div>
             <div className="exercise-column">
-              <h2 className="exercise-title">{courseCopy.assignment.rightColumn.title}</h2>
-              {courseCopy.assignment.rightColumn.content.map((paragraph, index) => (
+              <h2 className="exercise-title">{rightColumn.title}</h2>
+              <p className="exercise-description">{rightColumn.intro}</p>
+              <ul className="assignment-submission-list">
+                {rightColumn.submissionList.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+              {rightColumn.outro.map((paragraph, index) => (
                 <p key={index} className="exercise-description">
                   {paragraph}
                 </p>

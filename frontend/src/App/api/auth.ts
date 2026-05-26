@@ -23,3 +23,10 @@ export const exchangeCode = async (
   );
   return response.data;
 };
+
+export const devLogin = async (): Promise<AuthResponse> => {
+  const response = await axios.post<AuthResponse>(
+    `${import.meta.env.VITE_API_URL}/auth/dev`,
+  );
+  return response.data;
+};

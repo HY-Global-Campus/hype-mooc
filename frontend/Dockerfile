@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # frontend/Dockerfile — same pattern as business-model-canvas: separate frontend pod, Express serves dist
 
 # --- deps: install ALL deps (incl. dev) for building ---
@@ -15,9 +16,11 @@ ENV VITE_API_URL=${VITE_API_URL}
 ENV NODE_ENV=development
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173", "--strictPort"]
+RUN chown -R node:node /app
+USER node
+CMD ["sh", "-c", "npm run dev -- --host 0.0.0.0 --port ${PORT:-5173} --strictPort"]
 
 # --- build: compile Vite/React app to static files ---
 FROM node:20-alpine AS build
@@ -35,11 +38,13 @@ FROM node:20-alpine AS runner
 ENV NODE_ENV=production
 WORKDIR /app
 
-RUN npm install express
+RUN npm install express@4.19.2 --omit=dev --no-audit --no-fund
 
 COPY --from=build /app/dist ./dist
 COPY server.js ./
 
 EXPOSE 3000
+
+USER node
 
 CMD ["node", "server.js"]

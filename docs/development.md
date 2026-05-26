@@ -5,6 +5,10 @@ To launch both, in project root:
 
 `docker compose up --build`
 
-This will make a new database too, for development.
+This also starts a PostgreSQL database for development. Database data is kept in a named Docker volume, so it survives normal restarts.
 
-You can shutdown in the terminal by pressing `ctrl + c` and if you want the images to reset, `docker compose down`. Keep in mind that the database will get reset with this.
+You can shutdown in the terminal by pressing `ctrl + c`, or stop and remove the containers with `docker compose down`.
+
+If you want to reset the database too, run `docker compose down -v`.
+
+For local environment overrides, copy `example.env` to `.env` and edit the values.

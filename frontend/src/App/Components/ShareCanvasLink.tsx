@@ -15,6 +15,8 @@ const ShareCanvasLink: React.FC<ShareCanvasLinkProps> = ({ userId }) => {
     return `${window.location.origin}/view/${userId}`;
   }, [userId]);
 
+  const displayUrl = shareUrl;
+
   const copyToClipboard = async () => {
     if (!shareUrl) {
       return;
@@ -55,11 +57,19 @@ const ShareCanvasLink: React.FC<ShareCanvasLinkProps> = ({ userId }) => {
             color: '#000',
             wordBreak: 'break-all',
           }}
+          title={shareUrl}
         >
-          {shareUrl || 'Share link unavailable'}
+          {displayUrl || 'Share link unavailable'}
         </div>
-        <div style={{ fontSize: '14px', marginTop: '12px', color: '#555' }}>
-          {copied ? 'Copied to clipboard' : 'Click to copy this link'}
+        <div
+          style={{
+            fontSize: '14px',
+            marginTop: '12px',
+            color: copied ? '#1a5c1a' : '#333',
+            fontWeight: 500,
+          }}
+        >
+          {copied ? 'Copied to clipboard!' : 'Click to copy this link'}
         </div>
       </button>
     </div>

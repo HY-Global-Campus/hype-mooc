@@ -202,6 +202,20 @@ Chapter4Banner
   margin: 0;
 }
 
+.course-header-star-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  color: inherit;
+}
+
+.course-header-star-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
 .course-header-icon {
   width: 24px;
   height: 24px;
@@ -229,6 +243,7 @@ Chapter4Banner
   justify-content: flex-start;
   gap: clamp(20px, 2.5vh, 32px);
   min-height: 0;
+  box-sizing: border-box;
 }
 
 .exercise-panel {
@@ -271,7 +286,7 @@ Chapter4Banner
 .exercise-description {
   font-size: 16px;
   color: #000;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
   line-height: 1.5;
   font-family: 'Gotham Narrow', Arial, sans-serif;
 }
@@ -322,7 +337,23 @@ Chapter4Banner
 .table-exercise th {
   background-color: #f5f5f5;
   font-weight: bold;
-  font-size: 16px;
+  font-size: clamp(13px, 1.5vw, 16px);
+  white-space: normal;
+  vertical-align: bottom;
+}
+
+.table-exercise-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-exercise.table-exercise {
+  table-layout: fixed;
+}
+
+.table-cell-empty {
+  color: #888;
+  font-style: italic;
 }
 
 .table-exercise input {
@@ -332,15 +363,36 @@ Chapter4Banner
   font-size: 16px;
   font-family: 'Gotham Narrow', Arial, sans-serif;
   padding: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-exercise input::placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .readonly-text {
   white-space: pre-wrap;
   line-height: 1.5;
   padding: 16px;
+  min-height: 48px;
   background-color: #f9f9f9;
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-family: 'Gotham Narrow', Arial, sans-serif;
+}
+
+.readonly-text--empty {
+  color: #666;
+  font-style: italic;
+}
+
+.exercise-textarea--compact {
+  min-height: 120px;
+  max-height: 200px;
+  resize: none;
 }
 
 /* Exercise Subtitle */
@@ -362,9 +414,65 @@ Chapter4Banner
   text-align: center;
 }
 
+.exercise-single-column--left {
+  text-align: left;
+}
+
+.exercise-single-column--left .exercise-panel {
+  text-align: left;
+}
+
 .exercise-single-column .exercise-panel {
   max-width: 800px;
   width: 100%;
+}
+
+.part-intro-panel {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.part-intro-title {
+  font-size: clamp(32px, 5vw, 48px);
+  margin-bottom: 20px;
+}
+
+.part-intro-instruction {
+  font-size: 20px;
+}
+
+.part-intro-subtitle {
+  font-size: 24px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.part-peer-review-list {
+  font-size: 18px;
+  list-style: none;
+  padding-left: 0;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.part-peer-review-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.part-peer-review-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2c2c2c;
+  flex-shrink: 0;
 }
 
 /* Two Column Layout */
@@ -376,10 +484,129 @@ Chapter4Banner
   align-items: start;
 }
 
+.exercise-two-column--single {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+}
+
+.exercise-column-header-spacer {
+  min-height: 56px;
+  margin-bottom: 20px;
+}
+
+.learning-objectives-page .exercise-two-column {
+  padding-bottom: 32px;
+}
+
 .exercise-column {
   display: flex;
   flex-direction: column;
   min-width: 0;
+}
+
+/* Keeps paired textareas aligned when column intros differ in length */
+.exercise-two-column:not(.exercise-two-column--single) .exercise-column-intro {
+  line-height: 1.5;
+  min-height: 4.5em;
+  margin-bottom: 24px;
+}
+
+/* Row-paired fields: subgrid syncs label, description, and textarea rows across columns */
+.exercise-two-column--paired-fields {
+  align-items: start;
+  row-gap: clamp(20px, 2.5vh, 32px);
+}
+
+.exercise-two-column--paired-fields > .exercise-title {
+  margin-bottom: 20px;
+}
+
+.exercise-field-pair {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: auto auto auto;
+  column-gap: clamp(20px, 3vw, 36px);
+  margin-bottom: clamp(20px, 2.5vh, 32px);
+}
+
+.exercise-field-pair:last-child {
+  margin-bottom: 0;
+}
+
+.exercise-field-block {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  min-width: 0;
+}
+
+.exercise-field-label {
+  display: block;
+  font-weight: bold;
+  margin: 0 0 8px;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 16px;
+  color: #000;
+}
+
+.exercise-field-description {
+  font-size: 16px;
+  color: #000;
+  margin: 0 0 12px;
+  line-height: 1.5;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+}
+
+.exercise-field-textarea {
+  margin-bottom: 0;
+  width: 100%;
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  background: white;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.exercise-field-label-spacer,
+.exercise-field-description-spacer {
+  display: block;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+}
+
+.exercise-field-block--empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.exercise-field-pair--orphan {
+  grid-template-columns: 1fr 1fr;
+}
+
+.exercise-field-pair--orphan .exercise-field-block--empty {
+  display: none;
+}
+
+@supports not (grid-template-columns: subgrid) {
+  .exercise-field-pair {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .exercise-field-block {
+    display: flex;
+    flex-direction: column;
+    grid-row: auto;
+    grid-template-rows: none;
+  }
+
+  .exercise-field-description {
+    min-height: 4.5em;
+  }
 }
 
 .learning-objectives-chat-title {
@@ -392,13 +619,27 @@ Chapter4Banner
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
-  height: 620px;
+  height: clamp(420px, 65vh, 720px);
   min-height: 0;
   background: #f7f8f8;
   border: 1px solid #8f9597;
   border-radius: 0;
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.learning-objectives-chat-shell--readonly {
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.learning-objectives-chat-readonly-note {
+  margin: 0;
+  text-align: center;
+  color: #444;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .learning-objectives-chat-label {
@@ -416,6 +657,7 @@ Chapter4Banner
   min-height: 0;
   display: flex;
   overflow: hidden;
+  overflow-x: hidden;
   height: 100%;
 }
 
@@ -482,7 +724,7 @@ Chapter4Banner
 
   .learning-objectives-chat-shell {
     width: 100%;
-    height: 500px;
+    height: 560px;
   }
 }
 

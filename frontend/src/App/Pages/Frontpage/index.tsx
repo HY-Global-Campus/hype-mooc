@@ -1,5 +1,5 @@
-import '../pages.css'
-import logo from '../../../assets/logo-hy-mooc.png'
+import '../pages.css';
+import logo from '../../../assets/HY-Logo_White.svg';
 
 function FrontPage() {
   return (
@@ -7,7 +7,7 @@ function FrontPage() {
       <div className="front-container">
         <h1 className="front-title">Course design in higher education</h1>
         <h2 className="front-subtitle">MOOC</h2>
-        <img src={logo} alt="HY MOOC logo" className="front-logo" />
+        <img src={logo} alt="University of Helsinki MOOC" className="front-logo" />
         <p className="front-university">University of Helsinki</p>
       </div>
     </div>
@@ -15,4 +15,3 @@ function FrontPage() {
 }
 
 export default FrontPage;
-

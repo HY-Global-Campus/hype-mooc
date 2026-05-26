@@ -85,15 +85,16 @@
 .nav-buttons {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 16px;
-  width: min(720px, 100%);
+  width: min(480px, 100%);
   margin: 0 auto;
 }
 
 .nav-btn {
-  flex: 1;
-  min-width: 0;
+  flex: 0 1 auto;
+  min-width: 140px;
+  text-align: center;
   border: 1px solid #000;
   background: rgba(255, 255, 255, 0.92);
   border-radius: 999px;
@@ -103,20 +104,14 @@
   line-height: 1.2;
   font-family: 'Gotham Narrow', Arial, sans-serif;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .nav-btn:disabled {
-  opacity: 0.35;
+  opacity: 0.55;
+  color: #666;
+  border-color: #999;
   cursor: not-allowed;
-}
-
-.nav-btn-prev {
-  text-align: left;
-}
-
-.nav-btn-next {
-  text-align: right;
 }
 
 @media (min-width: 768px) {

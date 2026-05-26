@@ -1,0 +1,22 @@
+services:
+  dev:
+    image: mcr.microsoft.com/devcontainers/javascript-node:20-bookworm
+    init: true
+    volumes:
+      # Relative paths are resolved from ../docker-compose.yml, the first compose file.
+      - ..:/workspace:cached
+    command: sleep infinity
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/mydatabase
+      JWT_SECRET: developmentsecret
+      NODE_ENV: development
+      DEV_AUTH_BYPASS: "true"
+      VITE_DEV_AUTH_BYPASS: "true"
+      GCAI_URL: ${GCAI_URL:-http://127.0.0.1:1}
+      GCAI_TOKEN: ${GCAI_TOKEN:-dev}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-}
+      PORT: "8080"
+    depends_on:
+      db:
+        condition: service_healthy

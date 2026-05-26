@@ -1,13 +1,15 @@
-import { CSSProperties, useCallback } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { CSSProperties, useCallback, useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { generatePKCE, generateRandomString } from '../utils/pkce';
 import borealforest from '../../assets/HY_Serendip-BOREALFOREST.jpg';
+import { devLogin } from '../api/auth';
+import { setAuthToken } from '../utils/auth';
 
 const OIDC_AUTHORIZE_URL =
   'https://courses.mooc.fi/api/v0/main-frontend/oauth/authorize';
 
 const wrapperStyle: CSSProperties = {
-  background: `url(${borealforest}) no-repeat center center fixed`,
+  background: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${borealforest}) no-repeat center center fixed`,
   backgroundSize: 'cover',
   display: 'flex',
   justifyContent: 'center',
@@ -19,11 +21,14 @@ const wrapperStyle: CSSProperties = {
 };
 
 const containerStyle: CSSProperties = {
-  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+  backdropFilter: 'blur(4px)',
   padding: '60px',
   borderRadius: '10px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   textAlign: 'center',
+  position: 'relative',
+  zIndex: 1,
 };
 
 const buttonStyle: CSSProperties = {
@@ -39,15 +44,29 @@ const buttonStyle: CSSProperties = {
   fontSize: '16px',
 };
 
+const devButtonStyle: CSSProperties = {
+  ...buttonStyle,
+  backgroundColor: 'transparent',
+  color: '#666',
+  border: '2px solid #999',
+  marginTop: '16px',
+};
+
+const errorStyle: CSSProperties = {
+  color: '#f44336',
+  marginTop: '12px',
+  fontSize: '14px',
+};
+
 const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
+const devAuthBypassEnabled = import.meta.env.VITE_DEV_AUTH_BYPASS === 'true';
 
 const Login: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const from = (location.state as { from: Location })?.from?.pathname || '/';
-
-  if (DEMO_MODE) {
-    return <Navigate to="/" replace />;
-  }
+  const [error, setError] = useState('');
+  const [devLoading, setDevLoading] = useState(false);
 
   const handleLogin = useCallback(async () => {
     const { codeVerifier, codeChallenge } = await generatePKCE();
@@ -72,6 +91,28 @@ const Login: React.FC = () => {
     window.location.href = `${OIDC_AUTHORIZE_URL}?${params}`;
   }, [from]);
 
+  if (DEMO_MODE) {
+    return <Navigate to="/" replace />;
+  }
+
+  const startDevLogin = async () => {
+    setError('');
+    setDevLoading(true);
+    try {
+      const data = await devLogin();
+      const ok = setAuthToken(data.token, data.displayName, String(data.id));
+      if (!ok) {
+        setError('Login succeeded but session could not be created. Please try again.');
+        return;
+      }
+      navigate(from, { replace: true });
+    } catch {
+      setError('Dev login failed. Is DEV_AUTH_BYPASS enabled on the backend?');
+    } finally {
+      setDevLoading(false);
+    }
+  };
+
   return (
     <div style={wrapperStyle}>
       <div style={containerStyle}>
@@ -80,6 +121,17 @@ const Login: React.FC = () => {
         <button type="button" onClick={handleLogin} style={buttonStyle}>
           Log in with MOOC.fi
         </button>
+        {devAuthBypassEnabled && (
+          <button
+            type="button"
+            onClick={startDevLogin}
+            style={devButtonStyle}
+            disabled={devLoading}
+          >
+            {devLoading ? 'Signing in…' : 'Dev login (local only)'}
+          </button>
+        )}
+        {error && <p style={errorStyle}>{error}</p>}
       </div>
     </div>
   );

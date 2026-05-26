@@ -5,6 +5,8 @@ export type ExerciseMeta = {
   type: 'text' | 'table' | 'two-column';
   props?: {
     multiline?: boolean;
+    compact?: boolean;
+    questionLabel?: string;
     placeholder?: string;
     required?: boolean;
     headers?: string[]; // for tables
@@ -42,8 +44,11 @@ export const exercisesMeta: ExerciseMeta[] = [
     type: 'text',
     props: {
       multiline: true,
+      compact: true,
       required: true,
-      placeholder: 'What are, in your opinion, the characteristics of good teaching and learning at university? Type your answer here max 50 word',
+      questionLabel:
+        'What are, in your opinion, the characteristics of good teaching and learning at university?',
+      placeholder: 'Type your answer here (max 50 words)',
     },
   },
   {
@@ -62,7 +67,7 @@ export const exercisesMeta: ExerciseMeta[] = [
         ]
       },
       rightColumn: {
-        title: '',
+        title: 'Course context',
         description: '',
         fields: [
           { label: 'targetStudents', placeholder: 'Who are the target students? Type your answer here max 50 words', required: true },
@@ -119,9 +124,8 @@ export const exercisesMeta: ExerciseMeta[] = [
     route: '/exercise/teaching-methods', 
     type: 'table', 
     props: { 
-      subTitle: 'Teaching methods',
       description: 'Select between 3 to 5 of the ILOs of your course and write down: what kind of active teaching methods would support your students attaining the ILO, what students are doing, and what resources do you need.',
-      headers: ['Intended learning outcomes', 'Teaching methods', "Students' actions", 'Resources (e.g. teachers, TA, tools, learning environments).'],
+      headers: ['Intended learning outcomes', 'Teaching methods', "Students' actions", 'Resources (e.g. teachers, TA, tools, environments)'],
       rows: 5
     } 
   },
