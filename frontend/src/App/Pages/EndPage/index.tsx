@@ -1,8 +1,8 @@
 import React from 'react';
+import '../../Components/Exercise/exercises.css';
 import '../pages.css';
 import Header from '../../Components/Header';
 import { courseCopy } from '../../../content/copy';
-import '../../Components/Exercise/exercises.css';
 import ShareCanvasLink from '../../Components/ShareCanvasLink';
 
 const EndPage: React.FC = () => {
@@ -19,10 +19,15 @@ const EndPage: React.FC = () => {
               <p className="exercise-description end-page-subtitle">
                 Share this view-only link
               </p>
-              <ShareCanvasLink userId={userId} />
-              <p className="exercise-description end-page-message">
-                {courseCopy.endpage.message}
-              </p>
+              <div className="end-page-share">
+                <ShareCanvasLink userId={userId} />
+              </div>
+              <div className="end-page-completion" role="status">
+                <p className="end-page-completion-heading">
+                  {courseCopy.endpage.congratulations}
+                </p>
+                <p className="end-page-completion-text">{courseCopy.endpage.message}</p>
+              </div>
             </div>
           </div>
         </div>

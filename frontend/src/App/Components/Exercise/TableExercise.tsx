@@ -10,7 +10,8 @@ type TableExerciseProps = {
   exerciseMeta?: ExerciseMeta;
 };
 
-const cellPlaceholder = (header: string) => `Enter ${header.toLowerCase()}…`;
+/** Generates a short placeholder for a table cell input. Column header already provides context. */
+const cellPlaceholder = (_header: string): string => 'Type here…';
 
 const TableExercise: React.FC<TableExerciseProps> = ({ exerciseMeta: metaOverride }) => {
   const { bookOne, onUpdateBookOne, readonly } = useExerciseContext();

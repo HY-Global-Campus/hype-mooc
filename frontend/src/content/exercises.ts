@@ -125,7 +125,7 @@ export const exercisesMeta: ExerciseMeta[] = [
     type: 'table', 
     props: { 
       description: 'Select between 3 to 5 of the ILOs of your course and write down: what kind of active teaching methods would support your students attaining the ILO, what students are doing, and what resources do you need.',
-      headers: ['Intended learning outcomes', 'Teaching methods', "Students' actions", 'Resources (e.g. teachers, TA, tools, learning environments).'],
+      headers: ['Intended learning outcomes', 'Teaching methods', "Students' actions", 'Resources (e.g. teachers, TA, tools, environments)'],
       rows: 5
     } 
   },

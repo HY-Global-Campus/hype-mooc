@@ -29,11 +29,11 @@ const AssignmentPage: React.FC = () => {
             <div className="exercise-column">
               <h2 className="exercise-title">{rightColumn.title}</h2>
               <p className="exercise-description">{rightColumn.intro}</p>
-              <ol className="assignment-submission-list">
+              <ul className="assignment-submission-list">
                 {rightColumn.submissionList.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
-              </ol>
+              </ul>
               {rightColumn.outro.map((paragraph, index) => (
                 <p key={index} className="exercise-description">
                   {paragraph}

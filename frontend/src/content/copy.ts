@@ -79,8 +79,10 @@ export const courseCopy = {
       'The work includes diverse and critical reflection on the writer\'s own learning.'
     ]
   },
-  endpage: { 
-    message: 'Congratulations! You have completed the course design MOOC. Thank you for your participation!' 
+  endpage: {
+    congratulations: 'Congratulations!',
+    message:
+      'You have completed the course design MOOC. Thank you for your participation!',
   },
   chapters: [
     { id: 'intro', title: 'Introduction', intro: 'Welcome to the course design journey' },
