@@ -10,8 +10,7 @@ type TableExerciseProps = {
   exerciseMeta?: ExerciseMeta;
 };
 
-/** Generates a short placeholder for a table cell input. Column header already provides context. */
-const cellPlaceholder = (_header: string): string => 'Type here…';
+const TABLE_CELL_PLACEHOLDER = 'Type here…';
 
 const TableExercise: React.FC<TableExerciseProps> = ({ exerciseMeta: metaOverride }) => {
   const { bookOne, onUpdateBookOne, readonly } = useExerciseContext();
@@ -91,7 +90,7 @@ const TableExercise: React.FC<TableExerciseProps> = ({ exerciseMeta: metaOverrid
                             disabled={readonly}
                             value={value?.[r]?.[c] ?? ''}
                             onChange={onCellChange(r, c)}
-                            placeholder={cellPlaceholder(header)}
+                            placeholder={TABLE_CELL_PLACEHOLDER}
                             aria-label={`${header}, row ${r + 1}`}
                           />
                         )}
