@@ -4,5 +4,4 @@ coverage/
 logs/
 *.log
 .env
-.env.*
 .git/

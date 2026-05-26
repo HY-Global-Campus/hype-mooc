@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd /workspace
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 npm run sync-types
 
-(cd backend && npm ci)
-(cd frontend && npm ci)
+npm ci --prefix backend
+npm ci --prefix frontend

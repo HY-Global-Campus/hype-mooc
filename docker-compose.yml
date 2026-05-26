@@ -1,7 +1,30 @@
-version: "3.9"
+name: hype-mooc
+
 services:
+  db:
+    image: postgres:13
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB -h 127.0.0.1"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
   app:
-    build: ./backend
+    init: true
+    build:
+      context: ./backend
+      args:
+        NODE_ENV: development
     extra_hosts:
       - "project-331.local:host-gateway"
     environment:
@@ -10,16 +33,22 @@ services:
       JWT_SECRET: developmentsecret
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-}
-      GCAI_URL: ${GCAI_URL}
-      GCAI_TOKEN: ${GCAI_TOKEN}
-      # More reliable file watching inside containers (optional but helpful)
+      GCAI_URL: ${GCAI_URL:-}
+      GCAI_TOKEN: ${GCAI_TOKEN:-}
       CHOKIDAR_USEPOLLING: "true"
       CHOKIDAR_INTERVAL: "150"
     ports:
-      - "${BACKEND_PORT:-8081}:8080"
+      - "127.0.0.1:${BACKEND_PORT:-8081}:8080"
     depends_on:
-      - db
-    # Use compose watch for live sync + auto rebuild when deps change
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"const net=require('net'); const s=net.connect(8080,'127.0.0.1'); s.on('connect',()=>process.exit(0)); s.on('error',()=>process.exit(1)); setTimeout(()=>process.exit(1),2000);\""]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
     develop:
       watch:
         - action: sync
@@ -34,36 +63,31 @@ services:
         - action: rebuild
           path: ./backend/package-lock.json
 
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
-    ports:
-      - "5432:5432"
-
   frontend:
+    init: true
     build:
       context: ./frontend
       target: dev
       args:
         VITE_API_URL: http://localhost:${BACKEND_PORT:-8081}
     environment:
+      NODE_ENV: development
       VITE_API_URL: http://localhost:${BACKEND_PORT:-8081}
       VITE_OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
-      # Optional: improves HMR file detection in Docker
+      PORT: 5173
       CHOKIDAR_USEPOLLING: "true"
       CHOKIDAR_INTERVAL: "150"
+    working_dir: /app
     ports:
-      - "5173:5173"
+      - "127.0.0.1:5173:5173"
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     develop:
       watch:
         - action: sync
           path: ./frontend
-          target: /usr/src/app
+          target: /app
           ignore:
             - node_modules/
             - .git/
@@ -72,3 +96,6 @@ services:
           path: ./frontend/package.json
         - action: rebuild
           path: ./frontend/package-lock.json
+
+volumes:
+  postgres-data:
