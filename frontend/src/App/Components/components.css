@@ -104,7 +104,16 @@
   line-height: 1.2;
   font-family: 'Gotham Narrow', Arial, sans-serif;
   cursor: pointer;
-  transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.15s ease, opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.nav-btn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 3px;
 }
 
 .nav-btn:disabled {
@@ -112,6 +121,142 @@
   color: #666;
   border-color: #999;
   cursor: not-allowed;
+}
+
+/* Login page buttons */
+
+.login-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 24px;
+  margin-top: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.15s ease;
+}
+
+.login-btn:hover {
+  background-color: #43a047;
+}
+
+.login-btn:focus-visible {
+  outline: 2px solid #2e7d32;
+  outline-offset: 2px;
+}
+
+.login-btn:active {
+  background-color: #388e3c;
+}
+
+.login-btn-dev {
+  display: block;
+  width: 100%;
+  padding: 12px 24px;
+  margin-top: 16px;
+  background-color: transparent;
+  color: #666;
+  border: 2px solid #999;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.login-btn-dev:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: #666;
+  color: #444;
+}
+
+.login-btn-dev:focus-visible {
+  outline: 2px solid #666;
+  outline-offset: 2px;
+}
+
+.login-btn-dev:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Auth callback retry button */
+
+.auth-retry-btn {
+  padding: 10px 20px;
+  margin-top: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.15s ease;
+}
+
+.auth-retry-btn:hover {
+  background-color: #43a047;
+}
+
+.auth-retry-btn:focus-visible {
+  outline: 2px solid #2e7d32;
+  outline-offset: 2px;
+}
+
+/* Share canvas link button */
+
+.share-canvas-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #000;
+  border-radius: 12px;
+  background: #fff;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.share-canvas-btn:hover:not(:disabled) {
+  background-color: #f5f5f5;
+}
+
+.share-canvas-btn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.share-canvas-btn:disabled {
+  cursor: not-allowed;
+}
+
+/* InfoIcon close button */
+
+.info-icon-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 4px;
+  padding: 2px 6px;
+  line-height: 1;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.info-icon-close-btn:hover {
+  color: #000;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.info-icon-close-btn:focus-visible {
+  outline: 2px solid #333;
+  outline-offset: 2px;
 }
 
 @media (min-width: 768px) {

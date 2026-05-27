@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './components.css';
 
 interface InfoIconProps {
   infoText: string;
@@ -66,7 +67,7 @@ const InfoIcon: React.FC<InfoIconProps> = ({ infoText, color }) => {
       </div>
       {isOpen && (
         <div style={floatingWindowStyle}>
-          <button style={closeBtnStyle} onClick={toggleWindow}>
+          <button className="info-icon-close-btn" onClick={toggleWindow}>
             ×
           </button>
           <div>{infoText}</div>

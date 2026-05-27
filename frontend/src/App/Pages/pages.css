@@ -33,6 +33,14 @@
   color: #fff;
 }
 
+.app-footer--dark .nav-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.app-footer--dark .nav-btn:focus-visible {
+  outline-color: #fff;
+}
+
 /* Page structure - natural height; main in AppLayout scrolls */
 .page-with-header {
   display: flex;

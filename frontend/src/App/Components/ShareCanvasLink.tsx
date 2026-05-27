@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import './components.css';
 
 type ShareCanvasLinkProps = {
   userId: string | null;
@@ -37,15 +38,7 @@ const ShareCanvasLink: React.FC<ShareCanvasLinkProps> = ({ userId }) => {
         type="button"
         onClick={copyToClipboard}
         disabled={!shareUrl}
-        style={{
-          width: '100%',
-          textAlign: 'left',
-          border: '1px solid #000',
-          borderRadius: '12px',
-          background: '#fff',
-          padding: '16px 20px',
-          cursor: shareUrl ? 'pointer' : 'not-allowed',
-        }}
+        className="share-canvas-btn"
       >
         <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '8px', color: '#000' }}>
           View-only share link

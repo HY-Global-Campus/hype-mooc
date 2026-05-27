@@ -96,6 +96,17 @@
 	display: inline-flex !important;
 	align-items: center !important;
 	justify-content: center !important;
+	cursor: pointer !important;
+	transition: background-color 0.15s ease !important;
+}
+
+.react-chatbot-kit-chat-btn-send:hover {
+	background-color: #9fc5c6 !important;
+}
+
+.react-chatbot-kit-chat-btn-send:focus-visible {
+	outline: 2px solid #406c6f !important;
+	outline-offset: 2px !important;
 }
 
 .react-chatbot-kit-user-avatar-container {

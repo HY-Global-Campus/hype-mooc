@@ -1,4 +1,5 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
+import './components.css';
 import { useNavigate } from 'react-router-dom';
 import { exchangeCode } from '../api/auth';
 import borealforest from '../../assets/HY_Serendip-BOREALFOREST.jpg';
@@ -93,15 +94,7 @@ const AuthCallback: React.FC = () => {
             <p style={{ color: 'red' }}>{error}</p>
             <button
               onClick={() => navigate('/login')}
-              style={{
-                padding: '10px 20px',
-                marginTop: '16px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-              }}
+              className="auth-retry-btn"
             >
               Try again
             </button>

@@ -690,6 +690,16 @@ Chapter4Banner
   font-family: 'Gotham Narrow', Arial, sans-serif;
 }
 
+.nav-button:hover:not(:disabled) {
+  color: #555;
+}
+
+.nav-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .nav-button:disabled {
   color: #ccc;
   cursor: not-allowed;

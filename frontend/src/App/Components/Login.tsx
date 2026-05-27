@@ -118,14 +118,14 @@ const Login: React.FC = () => {
       <div style={containerStyle}>
         <h1>Login</h1>
         <p>Sign in with your MOOC.fi account to continue.</p>
-        <button type="button" onClick={handleLogin} style={buttonStyle}>
+        <button type="button" onClick={handleLogin} className="login-btn">
           Log in with MOOC.fi
         </button>
         {devAuthBypassEnabled && (
           <button
             type="button"
             onClick={startDevLogin}
-            style={devButtonStyle}
+            className="login-btn-dev"
             disabled={devLoading}
           >
             {devLoading ? 'Signing in…' : 'Dev login (local only)'}
