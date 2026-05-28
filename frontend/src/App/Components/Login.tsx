@@ -44,14 +44,6 @@ const buttonStyle: CSSProperties = {
   fontSize: '16px',
 };
 
-const devButtonStyle: CSSProperties = {
-  ...buttonStyle,
-  backgroundColor: 'transparent',
-  color: '#666',
-  border: '2px solid #999',
-  marginTop: '16px',
-};
-
 const errorStyle: CSSProperties = {
   color: '#f44336',
   marginTop: '12px',

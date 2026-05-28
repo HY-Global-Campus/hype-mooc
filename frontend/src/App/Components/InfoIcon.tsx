@@ -48,18 +48,6 @@ const InfoIcon: React.FC<InfoIconProps> = ({ infoText, color }) => {
     margin: '0 auto',
   };
 
-  const closeBtnStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    cursor: 'pointer',
-    background: 'none',
-    border: 'none',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#333',
-  };
-
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <div style={infoIconStyle} onClick={toggleWindow}>
