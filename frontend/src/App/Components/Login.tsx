@@ -31,19 +31,6 @@ const containerStyle: CSSProperties = {
   zIndex: 1,
 };
 
-const buttonStyle: CSSProperties = {
-  display: 'block',
-  width: '100%',
-  padding: '12px 24px',
-  marginTop: '20px',
-  backgroundColor: '#4CAF50',
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  fontSize: '16px',
-};
-
 const errorStyle: CSSProperties = {
   color: '#f44336',
   marginTop: '12px',
