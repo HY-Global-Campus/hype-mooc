@@ -58,8 +58,8 @@ export OIDC_CLIENT_ID="${OIDC_CLIENT_ID:-dev}"
 export OIDC_CLIENT_SECRET="${OIDC_CLIENT_SECRET:-}"
 export PORT=8080
 
-start_service backend npm --prefix backend run dev
-start_service frontend npm --prefix frontend run dev -- --host 0.0.0.0 --port 5173 --strictPort
+start_service backend pnpm --dir backend run dev
+start_service frontend pnpm --dir frontend run dev --host 0.0.0.0 --port 5173 --strictPort
 
 ensure_socat
 stop_pid postgres-forward

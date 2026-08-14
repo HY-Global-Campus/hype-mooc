@@ -3,9 +3,10 @@
   "type": "module",
   "version": "1.0.0",
   "main": "src/index.ts",
+  "packageManager": "pnpm@11.9.0",
   "scripts": {
     "dev": "node --no-warnings --enable-source-maps --loader ts-node/esm src/index.ts",
-    "dev:watch": "nodemon --legacy-watch --watch src --ext ts,js,json --exec \"npm run dev\"",
+    "dev:watch": "nodemon --legacy-watch --watch src --ext ts,js,json --exec \"pnpm run dev\"",
     "build": "tsc",
     "start": "node dist/index.js"
   },

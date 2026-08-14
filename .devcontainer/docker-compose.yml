@@ -1,6 +1,6 @@
 services:
   dev:
-    image: mcr.microsoft.com/devcontainers/javascript-node:20-bookworm
+    image: mcr.microsoft.com/devcontainers/javascript-node:22-bookworm
     init: true
     volumes:
       # Relative paths are resolved from ../docker-compose.yml, the first compose file.

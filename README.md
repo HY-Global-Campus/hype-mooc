@@ -36,8 +36,8 @@ The app guides a user through a course design canvas with:
 
 For local development without Docker:
 
-- Node.js 20+
-- npm
+- Node.js 22+
+- pnpm
 - PostgreSQL
 
 For Docker-based development:
@@ -120,8 +120,8 @@ Then install and run:
 
 ```bash
 cd backend
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 The backend serves on `http://localhost:8080` by default.
@@ -140,8 +140,8 @@ Install and run:
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 The frontend serves on `http://localhost:5173`.
@@ -152,18 +152,18 @@ The frontend serves on `http://localhost:5173`.
 
 ```bash
 cd frontend
-npm run dev
-npm run build
-npm run lint
+pnpm run dev
+pnpm run build
+pnpm run lint
 ```
 
 ### Backend
 
 ```bash
 cd backend
-npm run dev
-npm run dev:watch
-npm run build
+pnpm run dev
+pnpm run dev:watch
+pnpm run build
 ```
 
 ## API notes
@@ -197,7 +197,7 @@ Check:
 
 ### Backend crashes on startup with env errors
 
-Make sure all required env vars are exported in the shell before running `npm run dev`.
+Make sure all required env vars are exported in the shell before running `pnpm run dev`.
 
 ### Chatbot requests fail
 

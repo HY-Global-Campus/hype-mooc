@@ -1,0 +1,3 @@
+# core-js-pure's install script only prints a funding banner; declaring it keeps pnpm from failing the install.
+allowBuilds:
+  core-js-pure: false
