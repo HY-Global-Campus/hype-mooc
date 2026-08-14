@@ -40,7 +40,9 @@ const TextExercise: React.FC<TextExerciseProps> = ({ exerciseMeta: metaOverride 
   const compact = !!meta.props?.compact;
   const questionLabel = meta.props?.questionLabel;
   const wordLimit = meta.props?.wordLimit;
-  const placeholder = getAnswerPlaceholder(wordLimit);
+  // Only the multiline branch can cap and count words, so only it may promise a limit —
+  // a single-line exercise configured with wordLimit must not advertise one it ignores.
+  const placeholder = getAnswerPlaceholder(multiline ? wordLimit : undefined);
 
   if (readonly) {
     return (
