@@ -389,10 +389,12 @@ Chapter4Banner
   font-style: italic;
 }
 
-.exercise-textarea--compact {
-  min-height: 120px;
-  max-height: 200px;
-  resize: none;
+/* Tall enough that a 150-word answer is readable without scrolling inside the box.
+   Doubled class beats the later min-height overrides in the >=1200px media queries. */
+.exercise-textarea.exercise-textarea--compact {
+  min-height: 240px;
+  max-height: 360px;
+  resize: vertical;
 }
 
 /* Exercise Subtitle */
@@ -539,6 +541,11 @@ Chapter4Banner
   grid-template-rows: subgrid;
   grid-row: span 3;
   min-width: 0;
+}
+
+/* Stacked blocks have no spacing of their own; paired rows get theirs from .exercise-field-pair */
+.exercise-column > .exercise-field-block:not(:last-child) {
+  margin-bottom: clamp(20px, 2.5vh, 32px);
 }
 
 .exercise-field-label {
