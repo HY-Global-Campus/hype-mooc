@@ -208,3 +208,107 @@
 .react-chatbot-kit-chat-bot-avatar-container {
 	flex-shrink: 0 !important;
 }
+
+/* Markdown inside a bot bubble: ~480px wide, so browser defaults are far too airy. */
+.chatbot-markdown {
+	/* Model output can contain long URLs or identifiers; never widen the bubble. */
+	overflow-wrap: anywhere;
+}
+
+.chatbot-markdown > :first-child {
+	margin-top: 0;
+}
+
+.chatbot-markdown > :last-child {
+	margin-bottom: 0;
+}
+
+.chatbot-markdown p,
+.chatbot-markdown ul,
+.chatbot-markdown ol,
+.chatbot-markdown blockquote,
+.chatbot-markdown pre {
+	margin: 0 0 0.6em;
+}
+
+.chatbot-markdown h1,
+.chatbot-markdown h2,
+.chatbot-markdown h3,
+.chatbot-markdown h4,
+.chatbot-markdown h5,
+.chatbot-markdown h6 {
+	margin: 0.9em 0 0.3em;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.chatbot-markdown h1 {
+	font-size: 1.15em;
+}
+
+.chatbot-markdown h2 {
+	font-size: 1.08em;
+}
+
+.chatbot-markdown h3,
+.chatbot-markdown h4,
+.chatbot-markdown h5,
+.chatbot-markdown h6 {
+	font-size: 1em;
+}
+
+.chatbot-markdown ul,
+.chatbot-markdown ol {
+	padding-left: 1.3em;
+}
+
+.chatbot-markdown li {
+	margin-bottom: 0.25em;
+}
+
+.chatbot-markdown li:last-child {
+	margin-bottom: 0;
+}
+
+/* Loose lists wrap each item in <p>, whose margin would double the item spacing. */
+.chatbot-markdown li > p {
+	margin: 0;
+}
+
+.chatbot-markdown li > ul,
+.chatbot-markdown li > ol {
+	margin: 0.25em 0 0;
+}
+
+.chatbot-markdown hr {
+	border: none;
+	border-top: 1px solid rgba(31, 42, 43, 0.25);
+	margin: 0.8em 0;
+}
+
+.chatbot-markdown blockquote {
+	border-left: 3px solid rgba(31, 42, 43, 0.25);
+	padding-left: 0.7em;
+	color: #2c3a3b;
+}
+
+.chatbot-markdown code {
+	font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+	font-size: 0.92em;
+	background: rgba(255, 255, 255, 0.6);
+	border-radius: 4px;
+	padding: 0.1em 0.3em;
+}
+
+.chatbot-markdown pre {
+	background: rgba(255, 255, 255, 0.6);
+	border-radius: 8px;
+	padding: 8px 10px;
+	overflow-x: auto;
+}
+
+.chatbot-markdown pre code {
+	background: none;
+	padding: 0;
+	white-space: pre;
+}
