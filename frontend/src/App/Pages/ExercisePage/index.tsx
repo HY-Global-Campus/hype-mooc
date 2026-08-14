@@ -10,11 +10,6 @@ import { ExerciseContext } from '../../Components/Exercise/ExerciseContext';
 import { writeWithSyncNotify } from '../../utils/queryClient';
 import axios from 'axios';
 
-// Define the type for the mutation context
-type MutationContext = {
-  previousData?: Course;
-};
-
 const ExercisePage: React.FC = () => {
   const queryClient = useQueryClient();
   const userId = sessionStorage.getItem('id');
@@ -29,7 +24,7 @@ const ExercisePage: React.FC = () => {
 
 
   // Mutation for updating BookOne
-  const mutation = useMutation<Course, Error, Partial<Course>, MutationContext>({
+  const mutation = useMutation<Course, Error, Partial<Course>>({
     mutationFn: async (updatedBook: Partial<Course>) => {
       // Get the current optimistic data from the cache instead of using stale bookOne
       const currentData = queryClient.getQueryData<Course>(['course', userId]);
@@ -42,16 +37,12 @@ const ExercisePage: React.FC = () => {
       await queryClient.cancelQueries({
         queryKey: ['course', userId],
       }); // Cancel queries to ensure fresh data
-      // Deliberately no optimistic write: updateBookOneImmediate already applied it, and
-      // re-applying this mutation's snapshot after the await above would overwrite
-      // anything typed while it resolved.
-      return { previousData: queryClient.getQueryData<Course>(['course', userId]) };
+      // No optimistic write and nothing to roll back: the cache already holds the answers
+      // the learner typed. Restoring a pre-request snapshot on failure would delete
+      // whatever they wrote while the request was in flight.
     },
-    onError: (error, _newData, context) => {
+    onError: (error) => {
       console.error('Error updating BookOne:', error);
-      if (context?.previousData) {
-        queryClient.setQueryData<Course>(['course', userId], context.previousData);
-      }
     },
   });
 
