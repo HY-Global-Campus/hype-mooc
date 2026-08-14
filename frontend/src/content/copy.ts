@@ -1,6 +1,6 @@
 export const courseCopy = {
   frontpage: { 
-    title: 'Course Design in Higher Education MOOC',
+    title: 'Constructive Alignment in Course Design MOOC',
     hero: 'Learn to design effective online courses for higher education'
   },
   assignment: {
@@ -8,10 +8,10 @@ export const courseCopy = {
     leftColumn: {
       title: 'What is this assignment?',
       intro:
-        'In this exercise you\'ll start creating a course plan in canvas form. You will develop your course plan further in the next course (Constructive alignment in course design, 2 ECTS course). You can select an existing course or a completely new course that you could be teaching as the object of your course design assignment. You may choose a course from university curricula (',
+        'In this exercise you\'ll start creating a course plan in canvas form. You will develop your course plan further in the next course (Constructive alignment in course design, 2 ECTS course). You can select an existing course or a completely new course that you could be teaching as the object of your course design assignment. You may choose a course from university curricula (e.g. ',
       linkLabel: 'University of Helsinki courses',
       linkHref: 'https://studies.helsinki.fi/courses',
-      outro: ') or think about your own course that you\'re currently teaching.',
+      outro: ') or think about your own course that you\'re currently teaching or a course you could teach in the future.',
     },
     rightColumn: {
       title: 'Peer review criteria',
@@ -24,7 +24,7 @@ export const courseCopy = {
         '5th time: submit in Chapter 5, after filling in Part 5.',
       ],
       outro: [
-        'For each submission, you will receive two anonymous reviews. You will also need to provide three reviews for other peers anonymously. The selection of the canvas that you are requested to peer review is done automatically. The peer review will be done using a Likert scale of 1 (Strongly disagree) to 5 (Strongly agree).',
+        'For each submission, you will receive two anonymous reviews. You will also need to provide three reviews for other peers anonymously. The selection of the canvas that you are requested to peer review is done automatically. Peer review will be conducted using a 5-point rating scale ranging from 1 (Strongly disagree) to 5 (Strongly agree).',
         'The peer review criteria for each submission can be seen further in this canvas.',
       ],
     }
@@ -82,7 +82,7 @@ export const courseCopy = {
   endpage: {
     congratulations: 'Congratulations!',
     message:
-      'You have completed the course design MOOC. Thank you for your participation!',
+      'You have reached the end of the course design canvas. Please remember to continue the assignment by sharing the link on the course MOOC page.',
   },
   chapters: [
     { id: 'intro', title: 'Introduction', intro: 'Welcome to the course design journey' },

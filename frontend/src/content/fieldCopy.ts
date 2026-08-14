@@ -15,7 +15,7 @@ const fieldCopyByExercise: Record<string, Record<string, FieldCopyEntry>> = {
     nameAndScope: {
       label: 'Name and scope',
       description: 'What is the name and scope of your course?',
-      placeholder: 'Type your answer here (max 50 words)',
+      placeholder: 'Type your answer here (max 150 words)',
     },
     focus: {
       label: 'Focus',
@@ -25,27 +25,27 @@ const fieldCopyByExercise: Record<string, Record<string, FieldCopyEntry>> = {
     targetStudents: {
       label: 'Target students',
       description: 'Who are the target students?',
-      placeholder: 'Type your answer here (max 50 words)',
+      placeholder: 'Type your answer here (max 150 words)',
     },
     sizeAndEnvironment: {
       label: 'Size and learning environment',
       description:
         'Describe the size (number of students) of the course and the learning environment.',
-      placeholder: 'Type your answer here (max 50 words)',
+      placeholder: 'Type your answer here (max 150 words)',
     },
   },
   coreContent: {
     mustKnow: {
       label: 'Must know (80%)',
-      placeholder: 'Type your answer here (max 50 words)',
+      placeholder: 'Type your answer here (max 150 words)',
     },
     shouldKnow: {
       label: 'Should know (15%)',
-      placeholder: 'Type your answer here (max 50 words)',
+      placeholder: 'Type your answer here (max 150 words)',
     },
     niceToKnow: {
       label: 'Nice to know (5%)',
-      placeholder: 'Type your answer here (max 50 words)',
+      placeholder: 'Type your answer here (max 150 words)',
     },
   },
   learningObjectives: {

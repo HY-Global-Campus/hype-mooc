@@ -48,7 +48,7 @@ export const exercisesMeta: ExerciseMeta[] = [
       required: true,
       questionLabel:
         'What are, in your opinion, the characteristics of good teaching and learning at university?',
-      placeholder: 'Type your answer here (max 50 words)',
+      placeholder: 'Type your answer here (max 150 words)',
     },
   },
   {
@@ -62,7 +62,7 @@ export const exercisesMeta: ExerciseMeta[] = [
         description: '',
         fields: [
           { label: 'curriculum', placeholder: 'Describe where the course is in the curriculum of your degree program. Type your answer here max 200 words', required: true },
-          { label: 'nameAndScope', placeholder: 'What is the name and scope of your course? Type your answer here max 50 words', required: true },
+          { label: 'nameAndScope', placeholder: 'What is the name and scope of your course? Type your answer here max 150 words', required: true },
           { label: 'focus', placeholder: 'What is the focus of your course development task? Type your answer here max 200 words', required: true }
         ]
       },
@@ -70,8 +70,8 @@ export const exercisesMeta: ExerciseMeta[] = [
         title: 'Course context',
         description: '',
         fields: [
-          { label: 'targetStudents', placeholder: 'Who are the target students? Type your answer here max 50 words', required: true },
-          { label: 'sizeAndEnvironment', placeholder: 'Describe the size (number of students) of the course and the learning environment. Type your answer here max 50 words', required: true }
+          { label: 'targetStudents', placeholder: 'Who are the target students? Type your answer here max 150 words', required: true },
+          { label: 'sizeAndEnvironment', placeholder: 'Describe the size (number of students) of the course and the learning environment. Type your answer here max 150 words', required: true }
         ]
       }
     } 
@@ -83,7 +83,7 @@ export const exercisesMeta: ExerciseMeta[] = [
     type: 'two-column', 
     props: { 
       leftColumn: {
-        title: 'Intended learning outcomes',
+        title: 'Intended learning outcomes (ILOs)',
         description: '',
         fields: [
           { label: 'ilosBeforeAI', placeholder: 'Type your answer here max 150 words', required: true },
@@ -107,9 +107,9 @@ export const exercisesMeta: ExerciseMeta[] = [
         title: 'Core content',
         description: 'Analyse the content of the course you are planning or developing. Use the following categorization (Must know content of the course, should know content of the course and nice to know content of the course) as a template. Remember to take into consideration the student\'s workload.',
         fields: [
-          { label: 'mustKnow', placeholder: 'Must know 80%. Type your answer here max 50 words', required: true },
-          { label: 'shouldKnow', placeholder: 'Should know 15%. Type your answer here max 50 words', required: true },
-          { label: 'niceToKnow', placeholder: 'Nice to know 5%. Type your answer here max 50 words', required: true }
+          { label: 'mustKnow', placeholder: 'Must know 80%. Type your answer here max 150 words', required: true },
+          { label: 'shouldKnow', placeholder: 'Should know 15%. Type your answer here max 150 words', required: true },
+          { label: 'niceToKnow', placeholder: 'Nice to know 5%. Type your answer here max 150 words', required: true }
         ]
       },
       rightColumn: {
@@ -125,7 +125,7 @@ export const exercisesMeta: ExerciseMeta[] = [
     type: 'table', 
     props: { 
       description: 'Select between 3 to 5 of the ILOs of your course and write down: what kind of active teaching methods would support your students attaining the ILO, what students are doing, and what resources do you need.',
-      headers: ['Intended learning outcomes', 'Teaching methods', "Students' actions", 'Resources (e.g. teachers, TA, tools, environments)'],
+      headers: ['Intended learning outcomes', 'Teaching methods', "Students' actions", 'Resources (e.g. teachers, teaching assistants, tools, environments)'],
       rows: 5
     } 
   },
