@@ -1,20 +1,19 @@
 import React, { useCallback, useRef } from 'react';
 import { useExerciseContext } from './useExerciseContext';
-import { ExerciseMeta } from '../../../content/exercises';
+import { ExerciseFieldMeta, ExerciseMeta } from '../../../content/exercises';
 import { useCurrentExerciseMeta } from './useCurrentExerciseMeta';
 import {
+  getAnswerPlaceholder,
   getFieldDescription,
   getFieldDisplayLabel,
-  getFieldPlaceholder,
 } from '../../../content/fieldCopy';
 import { CanvasExerciseId, getTwoColumnFieldMap } from './exerciseDataHelpers';
 import { Course } from '../../api/courseService';
+import WordLimitedTextarea from './WordLimitedTextarea';
 
 type TwoColumnExerciseProps = {
   exerciseMeta?: ExerciseMeta;
 };
-
-type FieldConfig = { label: string; placeholder: string; required?: boolean };
 
 const TwoColumnExercise: React.FC<TwoColumnExerciseProps> = ({ exerciseMeta: metaOverride }) => {
   const { bookOne, onUpdateBookOne, readonly } = useExerciseContext();
@@ -96,7 +95,7 @@ const TwoColumnExercise: React.FC<TwoColumnExerciseProps> = ({ exerciseMeta: met
 
   const getTextareaMinHeight = () => 'clamp(140px, 18vh, 220px)';
 
-  const shouldSkipFieldLabel = (field: FieldConfig, isLeft: boolean) => {
+  const shouldSkipFieldLabel = (field: ExerciseFieldMeta, isLeft: boolean) => {
     const displayLabel = getFieldDisplayLabel(meta.id, field.label);
     const columnTitle = isLeft ? leftColumn.title : rightColumn.title;
     const fieldsInColumn = isLeft ? leftFields : rightFields;
@@ -104,7 +103,7 @@ const TwoColumnExercise: React.FC<TwoColumnExerciseProps> = ({ exerciseMeta: met
   };
 
   const renderFieldBlock = (
-    field: FieldConfig | undefined,
+    field: ExerciseFieldMeta | undefined,
     pairIndex: number,
     isLeft: boolean
   ) => {
@@ -119,7 +118,7 @@ const TwoColumnExercise: React.FC<TwoColumnExerciseProps> = ({ exerciseMeta: met
 
     const description = getFieldDescription(meta.id, field.label);
     const displayLabel = getFieldDisplayLabel(meta.id, field.label);
-    const placeholder = getFieldPlaceholder(meta.id, field.label, field.placeholder);
+    const placeholder = getAnswerPlaceholder(field.wordLimit);
     const skipLabel = shouldSkipFieldLabel(field, isLeft);
     const value = getFieldValue(field.label);
 
@@ -155,16 +154,16 @@ const TwoColumnExercise: React.FC<TwoColumnExerciseProps> = ({ exerciseMeta: met
         ) : (
           <span className="exercise-field-description-spacer" aria-hidden="true" />
         )}
-        <textarea
+        <WordLimitedTextarea
           ref={(el) => {
             if (isLeft) leftTextareaRefs.current[pairIndex] = el;
             else rightTextareaRefs.current[pairIndex] = el;
           }}
           className="exercise-textarea exercise-field-textarea"
           value={value}
-          onChange={(e) => updateFieldValue(field.label, e.target.value)}
+          wordLimit={field.wordLimit}
+          onValueChange={(next) => updateFieldValue(field.label, next)}
           onKeyDown={(e) => handleKeyDown(e, isLeft, pairIndex)}
-          disabled={readonly}
           placeholder={placeholder}
           required={field.required}
           style={{ minHeight: getTextareaMinHeight() }}

@@ -3,13 +3,14 @@ import { useExerciseContext } from './useExerciseContext';
 import { ExerciseMeta } from '../../../content/exercises';
 import { useCurrentExerciseMeta } from './useCurrentExerciseMeta';
 import {
+  getAnswerPlaceholder,
   getFieldDescription,
   getFieldDisplayLabel,
-  getFieldPlaceholder,
 } from '../../../content/fieldCopy';
 import ChatBot from '../ChatBot';
 import { CanvasExerciseId, getTwoColumnFieldMap } from './exerciseDataHelpers';
 import { Course } from '../../api/courseService';
+import WordLimitedTextarea from './WordLimitedTextarea';
 
 type LearningObjectivesExerciseProps = {
   exerciseMeta?: ExerciseMeta;
@@ -71,7 +72,7 @@ const LearningObjectivesExercise: React.FC<LearningObjectivesExerciseProps> = ({
           {leftColumn.fields.map((field, index) => {
             const description = getFieldDescription(meta.id, field.label);
             const displayLabel = getFieldDisplayLabel(meta.id, field.label);
-            const placeholder = getFieldPlaceholder(meta.id, field.label, field.placeholder);
+            const placeholder = getAnswerPlaceholder(field.wordLimit);
             const value = getFieldValue(field.label);
 
             if (readonly) {
@@ -129,11 +130,11 @@ const LearningObjectivesExercise: React.FC<LearningObjectivesExerciseProps> = ({
                 >
                   {description}
                 </p>
-                <textarea
+                <WordLimitedTextarea
                   className="exercise-textarea"
                   value={value}
-                  onChange={(e) => updateFieldValue(field.label, e.target.value)}
-                  disabled={readonly}
+                  wordLimit={field.wordLimit}
+                  onValueChange={(next) => updateFieldValue(field.label, next)}
                   placeholder={placeholder}
                   required={field.required}
                   rows={6}

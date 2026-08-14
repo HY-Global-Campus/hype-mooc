@@ -397,6 +397,37 @@ Chapter4Banner
   resize: vertical;
 }
 
+/* Answer field: the textarea and, right below it, its word counter */
+.exercise-answer-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* For a textarea that grows to fill its panel instead of sitting at a fixed height */
+.exercise-answer-field--fill {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Element selector beats the .exercise-textarea/.exercise-field-textarea margins */
+.exercise-answer-field > textarea {
+  margin-bottom: 6px;
+}
+
+.exercise-word-count {
+  align-self: flex-end;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #4a4a4a;
+}
+
+.exercise-word-count--over {
+  color: #b02418;
+  font-weight: bold;
+}
+
 /* Exercise Subtitle */
 .exercise-subtitle {
   font-size: 20px;

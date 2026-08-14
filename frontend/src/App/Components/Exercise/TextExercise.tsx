@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useExerciseContext } from './useExerciseContext';
 import { ExerciseMeta } from '../../../content/exercises';
 import { useCurrentExerciseMeta } from './useCurrentExerciseMeta';
 import { CanvasExerciseId, getTextExerciseValue } from './exerciseDataHelpers';
 import { Course } from '../../api/courseService';
+import { getAnswerPlaceholder } from '../../../content/fieldCopy';
+import WordLimitedTextarea from './WordLimitedTextarea';
 import './exercises.css';
 
 type TextExerciseProps = {
@@ -18,14 +20,14 @@ const TextExercise: React.FC<TextExerciseProps> = ({ exerciseMeta: metaOverride 
   const value =
     exerciseId && bookOne ? getTextExerciseValue(bookOne, exerciseId) : '';
 
-  const onChange = useMemo(
-    () => (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const updateValue = useCallback(
+    (next: string) => {
       if (!exerciseId) return;
       onUpdateBookOne((current: Course) => ({
         ...current,
         exercises: {
           ...current.exercises,
-          [exerciseId]: { value: e.target.value },
+          [exerciseId]: { value: next },
         },
       }));
     },
@@ -37,7 +39,8 @@ const TextExercise: React.FC<TextExerciseProps> = ({ exerciseMeta: metaOverride 
   const multiline = !!meta.props?.multiline;
   const compact = !!meta.props?.compact;
   const questionLabel = meta.props?.questionLabel;
-  const placeholder = meta.props?.placeholder ?? 'Type your answer here';
+  const wordLimit = meta.props?.wordLimit;
+  const placeholder = getAnswerPlaceholder(wordLimit);
 
   if (readonly) {
     return (
@@ -67,21 +70,21 @@ const TextExercise: React.FC<TextExerciseProps> = ({ exerciseMeta: metaOverride 
           </p>
         )}
         {multiline ? (
-          <textarea
+          <WordLimitedTextarea
             className={`exercise-textarea${compact ? ' exercise-textarea--compact' : ''}`}
             value={value}
-            onChange={onChange}
-            disabled={readonly}
+            wordLimit={wordLimit}
+            onValueChange={updateValue}
             placeholder={placeholder}
             rows={compact ? 5 : undefined}
             style={compact ? { flex: 'none' } : { flex: 1 }}
+            wrapperClassName={compact ? undefined : 'exercise-answer-field--fill'}
           />
         ) : (
           <input
             className="exercise-input"
             value={value}
-            onChange={onChange}
-            disabled={readonly}
+            onChange={(e) => updateValue(e.target.value)}
             placeholder={placeholder}
           />
         )}

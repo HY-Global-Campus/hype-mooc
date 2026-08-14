@@ -1,3 +1,11 @@
+/** One answer field of a two-column exercise. Copy for it lives in fieldCopy.ts. */
+export type ExerciseFieldMeta = {
+  label: string;
+  /** Words the answer accepts, enforced on input and shown in the placeholder. */
+  wordLimit?: number;
+  required?: boolean;
+};
+
 export type ExerciseMeta = {
   id: string;
   title: string;
@@ -7,7 +15,8 @@ export type ExerciseMeta = {
     multiline?: boolean;
     compact?: boolean;
     questionLabel?: string;
-    placeholder?: string;
+    /** Words the answer accepts, enforced on input and shown in the placeholder. */
+    wordLimit?: number;
     required?: boolean;
     headers?: string[]; // for tables
     rows?: number; // for tables
@@ -17,20 +26,12 @@ export type ExerciseMeta = {
     leftColumn?: {
       title: string;
       description?: string;
-      fields: Array<{
-        label: string;
-        placeholder: string;
-        required?: boolean;
-      }>;
+      fields: ExerciseFieldMeta[];
     };
     rightColumn?: {
       title: string;
       description?: string;
-      fields: Array<{
-        label: string;
-        placeholder: string;
-        required?: boolean;
-      }>;
+      fields: ExerciseFieldMeta[];
     };
   };
 };
@@ -48,7 +49,7 @@ export const exercisesMeta: ExerciseMeta[] = [
       required: true,
       questionLabel:
         'What are, in your opinion, the characteristics of good teaching and learning at university?',
-      placeholder: 'Type your answer here (max 150 words)',
+      wordLimit: 150,
     },
   },
   {
@@ -61,17 +62,17 @@ export const exercisesMeta: ExerciseMeta[] = [
         title: 'The course',
         description: '',
         fields: [
-          { label: 'curriculum', placeholder: 'Describe where the course is in the curriculum of your degree program. Type your answer here max 200 words', required: true },
-          { label: 'nameAndScope', placeholder: 'What is the name and scope of your course? Type your answer here max 150 words', required: true },
-          { label: 'focus', placeholder: 'What is the focus of your course development task? Type your answer here max 200 words', required: true }
+          { label: 'curriculum', wordLimit: 200, required: true },
+          { label: 'nameAndScope', wordLimit: 150, required: true },
+          { label: 'focus', wordLimit: 200, required: true }
         ]
       },
       rightColumn: {
         title: 'Course context',
         description: '',
         fields: [
-          { label: 'targetStudents', placeholder: 'Who are the target students? Type your answer here max 150 words', required: true },
-          { label: 'sizeAndEnvironment', placeholder: 'Describe the size (number of students) of the course and the learning environment. Type your answer here max 150 words', required: true }
+          { label: 'targetStudents', wordLimit: 150, required: true },
+          { label: 'sizeAndEnvironment', wordLimit: 150, required: true }
         ]
       }
     } 
@@ -86,9 +87,9 @@ export const exercisesMeta: ExerciseMeta[] = [
         title: 'Intended learning outcomes (ILOs)',
         description: '',
         fields: [
-          { label: 'ilosBeforeAI', placeholder: 'Type your answer here max 150 words', required: true },
-          { label: 'ilosAfterAI', placeholder: 'Type your answer here max 150 words', required: true },
-          { label: 'argueChoice', placeholder: 'Type your answer here max 150 words', required: true }
+          { label: 'ilosBeforeAI', wordLimit: 150, required: true },
+          { label: 'ilosAfterAI', wordLimit: 150, required: true },
+          { label: 'argueChoice', wordLimit: 150, required: true }
         ]
       },
       rightColumn: {
@@ -107,9 +108,9 @@ export const exercisesMeta: ExerciseMeta[] = [
         title: 'Core content',
         description: 'Analyse the content of the course you are planning or developing. Use the following categorization (Must know content of the course, should know content of the course and nice to know content of the course) as a template. Remember to take into consideration the student\'s workload.',
         fields: [
-          { label: 'mustKnow', placeholder: 'Must know 80%. Type your answer here max 150 words', required: true },
-          { label: 'shouldKnow', placeholder: 'Should know 15%. Type your answer here max 150 words', required: true },
-          { label: 'niceToKnow', placeholder: 'Nice to know 5%. Type your answer here max 150 words', required: true }
+          { label: 'mustKnow', wordLimit: 150, required: true },
+          { label: 'shouldKnow', wordLimit: 150, required: true },
+          { label: 'niceToKnow', wordLimit: 150, required: true }
         ]
       },
       rightColumn: {
@@ -151,14 +152,14 @@ export const exercisesMeta: ExerciseMeta[] = [
         title: 'Describe assessment methods',
         description: 'How will you assess the students\' learning during and at the end of the course?',
         fields: [
-          { label: 'describeAssessmentMethods', placeholder: 'Type your answer here max 150 words', required: true }
+          { label: 'describeAssessmentMethods', wordLimit: 150, required: true }
         ]
       },
       rightColumn: {
         title: 'Constructive alignment reflection',
         description: 'Does your course plan meet the criteria of constructive alignment?',
         fields: [
-          { label: 'constructiveAlignmentReflection', placeholder: 'Type your answer here max 200 words', required: true }
+          { label: 'constructiveAlignmentReflection', wordLimit: 200, required: true }
         ]
       }
     } 
