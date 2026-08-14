@@ -46,15 +46,25 @@ const WordLimitedTextarea = forwardRef<HTMLTextAreaElement, WordLimitedTextareaP
           }}
         />
         {wordLimit !== undefined && (
-          <span
-            id={counterId}
-            className={`exercise-word-count${
-              isOverLimit ? ' exercise-word-count--over' : ''
-            }`}
-            aria-live="polite"
-          >
-            {wordCount} / {wordLimit} words
-          </span>
+          <>
+            <span
+              id={counterId}
+              className={`exercise-word-count${
+                isOverLimit ? ' exercise-word-count--over' : ''
+              }`}
+            >
+              {wordCount} / {wordLimit} words
+            </span>
+            {/* Announcing the running count would talk over every keystroke, so this stays
+                empty until the limit, the point where input starts being refused. */}
+            <span className="exercise-sr-only" aria-live="polite">
+              {wordCount < wordLimit
+                ? ''
+                : isOverLimit
+                  ? `Over the ${wordLimit} word limit: ${wordCount} words`
+                  : `Word limit reached: ${wordLimit} words`}
+            </span>
+          </>
         )}
       </div>
     );
