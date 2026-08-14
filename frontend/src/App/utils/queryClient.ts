@@ -20,7 +20,12 @@ const queryClient = new QueryClient({
  * stale value and lost. Notifying synchronously puts the re-render inside the event,
  * ahead of the check that compares node and prop values.
  *
- * Scoped per write so other queries keep React Query's default batching. Not reentrant.
+ * Scoped per write so other queries keep React Query's default batching.
+ *
+ * Call it straight from the event handler that owns the edit. Inside an open
+ * `notifyManager.batch()` — which query and mutation callbacks run in — notifications
+ * queue until that outer batch ends, by which point the `finally` below has restored the
+ * deferring scheduler, and the reverting comes back with no failure signal.
  */
 export function writeWithSyncNotify<T>(write: () => T): T {
   notifyManager.setScheduler((callback) => callback());
