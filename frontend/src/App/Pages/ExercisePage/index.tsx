@@ -38,18 +38,14 @@ const ExercisePage: React.FC = () => {
       }
       return await updateCourse(currentData.id, updatedBook);
     },
-    onMutate: async (newData) => {
+    onMutate: async () => {
       await queryClient.cancelQueries({
         queryKey: ['course', userId],
       }); // Cancel queries to ensure fresh data
-      const previousData = queryClient.getQueryData<Course>(['course', userId]);
-      queryClient.setQueryData<Course>(['course', userId], (old) => {
-        if (!old) {
-          throw new Error('bookOne is not defined');
-        }
-        return { ...old, ...newData };
-      });
-      return { previousData };
+      // Deliberately no optimistic write: updateBookOneImmediate already applied it, and
+      // re-applying this mutation's snapshot after the await above would overwrite
+      // anything typed while it resolved.
+      return { previousData: queryClient.getQueryData<Course>(['course', userId]) };
     },
     onError: (error, _newData, context) => {
       console.error('Error updating BookOne:', error);
