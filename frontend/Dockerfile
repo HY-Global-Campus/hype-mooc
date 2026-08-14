@@ -48,7 +48,9 @@ WORKDIR /app
 RUN corepack enable pnpm && pnpm add express@4.19.2 --prod
 
 COPY --from=build /app/dist ./dist
-COPY server.js ./
+# Explicit mode: COPY preserves the host file mode, so a developer's restrictive
+# umask would otherwise make server.js unreadable to the node user below.
+COPY --chmod=644 server.js ./
 
 EXPOSE 3000
 
