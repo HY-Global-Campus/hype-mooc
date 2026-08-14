@@ -7,6 +7,7 @@ import { debounce } from 'lodash';
 import Header from '../../Components/Header';
 import { getCourseByUserId, updateCourse, Course } from '../../api/courseService';
 import { ExerciseContext } from '../../Components/Exercise/ExerciseContext';
+import { writeWithSyncNotify } from '../../utils/queryClient';
 import axios from 'axios';
 
 // Define the type for the mutation context
@@ -60,14 +61,18 @@ const ExercisePage: React.FC = () => {
 
   // Immediate UI update function (no debounce, no server calls)
   const updateBookOneImmediate = useCallback((updateFn: Partial<Course> | ((current: Course) => Course)) => {
-    queryClient.setQueryData<Course>(['course', userId], (old) => {
-      if (!old) return old;
-      
-      if (typeof updateFn === 'function') {
-        return updateFn(old);
-      } else {
-        return { ...old, ...updateFn };
-      }
+    // Answer fields are controlled by this cache entry, so the re-render must land inside
+    // the keystroke's own event or React reverts the input to its pre-keystroke value.
+    writeWithSyncNotify(() => {
+      queryClient.setQueryData<Course>(['course', userId], (old) => {
+        if (!old) return old;
+
+        if (typeof updateFn === 'function') {
+          return updateFn(old);
+        } else {
+          return { ...old, ...updateFn };
+        }
+      });
     });
   }, [queryClient, userId]);
 
