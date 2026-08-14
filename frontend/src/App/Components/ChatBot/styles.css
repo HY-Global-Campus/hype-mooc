@@ -209,6 +209,11 @@
 	flex-shrink: 0 !important;
 }
 
+/* The library's loader draws white dots, invisible on our light bubble. */
+.chatbot-typing #chatbot-loader {
+	fill: #406c6f;
+}
+
 /* Markdown inside a bot bubble: ~480px wide, so browser defaults are far too airy. */
 .chatbot-markdown {
 	/* Model output can contain long URLs or identifiers; never widen the bubble. */
