@@ -7,6 +7,17 @@ interface NavigationButtonsProps {
   currentPage: number;
 }
 
+function isEditable(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+
+  return (
+    target.isContentEditable ||
+    target instanceof HTMLInputElement ||
+    target instanceof HTMLTextAreaElement ||
+    target instanceof HTMLSelectElement
+  );
+}
+
 const NavigationButtons: React.FC<NavigationButtonsProps> = ({ pages, currentPage }) => {
   const navigate = useNavigate();
 
@@ -24,6 +35,13 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ pages, currentPag
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Arrow keys must reach the caret in answer fields, which share this window
+      // listener because nothing between them stops propagation.
+      if (isEditable(event.target)) return;
+      // Alt/Cmd+Arrow is the browser's own back/forward, so acting on it too moves the
+      // learner two pages.
+      if (event.altKey || event.metaKey || event.ctrlKey || event.shiftKey) return;
+
       if (event.key === 'ArrowLeft') goToPreviousPage();
       else if (event.key === 'ArrowRight') goToNextPage();
     };
