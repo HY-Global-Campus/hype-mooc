@@ -153,20 +153,8 @@
   text-align: center;
 }
 
-.end-page-subtitle {
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 16px;
-}
-
 .end-page-panel {
   text-align: center;
-}
-
-.end-page-share {
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
 }
 
 .end-page-completion {

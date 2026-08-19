@@ -16,12 +16,7 @@ const EndPage: React.FC = () => {
           <div className="exercise-single-column exercise-single-column--left">
             <div className="exercise-panel part-intro-panel end-page-panel">
               <h2 className="exercise-title end-page-title">Share your course canvas</h2>
-              <p className="exercise-description end-page-subtitle">
-                Share this view-only link
-              </p>
-              <div className="end-page-share">
-                <ShareCanvasLink userId={userId} />
-              </div>
+              <ShareCanvasLink userId={userId} />
               <div className="end-page-completion" role="status">
                 <p className="end-page-completion-heading">
                   {courseCopy.endpage.congratulations}

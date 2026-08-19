@@ -205,30 +205,96 @@
   outline-offset: 2px;
 }
 
-/* Share canvas link button */
+/* View-only canvas link */
 
-.share-canvas-btn {
+.share-canvas {
   width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  box-sizing: border-box;
   text-align: left;
   border: 1px solid #000;
   border-radius: 12px;
   background: #fff;
   padding: 16px 20px;
+}
+
+.share-canvas-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-bottom: 8px;
+}
+
+.share-canvas-label {
+  margin: 0;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+}
+
+.share-canvas-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.share-canvas-url {
+  flex: 1 1 260px;
+  min-width: 0;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  word-break: break-all;
+}
+
+.share-canvas-copy {
+  flex: 0 0 auto;
+  min-width: 96px;
+  text-align: center;
+  border: 1px solid #000;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #000;
+  padding: 10px 20px;
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
-.share-canvas-btn:hover:not(:disabled) {
-  background-color: #f5f5f5;
+.share-canvas-copy:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.07);
 }
 
-.share-canvas-btn:focus-visible {
+.share-canvas-copy:focus-visible {
   outline: 2px solid #000;
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-.share-canvas-btn:disabled {
+.share-canvas-copy:disabled {
+  opacity: 0.55;
+  color: #666;
+  border-color: #999;
   cursor: not-allowed;
+}
+
+/* Sits beside the label so the idle state costs no reserved space. */
+.share-canvas-status {
+  font-family: 'Gotham Narrow', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a5c1a;
+}
+
+.share-canvas-status--failed {
+  color: #b02418;
 }
 
 /* InfoIcon close button */

@@ -492,6 +492,10 @@ Chapter4Banner
   margin-bottom: 12px;
 }
 
+.part-intro-share {
+  margin: 0 0 clamp(20px, 2.5vh, 32px);
+}
+
 .part-peer-review-list {
   font-size: 18px;
   list-style: none;
