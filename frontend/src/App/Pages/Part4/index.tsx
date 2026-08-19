@@ -1,10 +1,13 @@
 import React from 'react';
 import Header from '../../Components/Header';
+import ShareCanvasLink from '../../Components/ShareCanvasLink';
 import { courseCopy } from '../../../content/copy';
 import '../pages.css';
 import '../../Components/Exercise/exercises.css';
 
 const Part4Page: React.FC = () => {
+  const userId = sessionStorage.getItem('id');
+
   return (
     <div className="page-with-header">
       <Header />
@@ -16,6 +19,9 @@ const Part4Page: React.FC = () => {
               <p className="exercise-description part-intro-instruction">
                 {courseCopy.part4.instruction}
               </p>
+              <div className="part-intro-share">
+                <ShareCanvasLink userId={userId} />
+              </div>
               {courseCopy.part4.peerReviewCriteria?.length ? (
                 <>
                   <h3 className="exercise-subtitle part-intro-subtitle">

@@ -31,7 +31,7 @@ export const courseCopy = {
   },
   part1: {
     title: 'Part 1',
-    instruction: 'Complete this part, then go to the last page of the canvas to generate a link. You can add the link to the peer review exercise in Chapter 1, Topic 3.',
+    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 1, Topic 3.',
     peerReviewCriteria: [
       'The reflection includes pedagogical argumentation which utilizes relevant concepts, supported by the course materials in a comprehensive way.',
       'The course\'s target group has been analysed in depth.',
@@ -42,7 +42,7 @@ export const courseCopy = {
   },
   part2: {
     title: 'Part 2',
-    instruction: 'Complete this part, then go to the last page of the canvas to generate a link. You can add the link to the peer review exercise in Chapter 2, Topic 3.',
+    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 2, Topic 3.',
     peerReviewCriteria: [
       'The ILOs are clear and easy to understand.',
       'The ILOs are measurable in concrete ways.',
@@ -54,14 +54,14 @@ export const courseCopy = {
   },
   part3: {
     title: 'Part 3',
-    instruction: 'Complete this part, then go to the last page of the canvas to generate a link. You can add the link to the peer review exercise in Chapter 3, Topic 1.',
+    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 3, Topic 1.',
     peerReviewCriteria: [
       'The choice of the core content aligns with the ILOs.'
     ]
   },
   part4: {
     title: 'Part 4',
-    instruction: 'Complete this part, then go to the last page of the canvas to generate a link. You can add the link to the peer review exercise in Chapter 4, Topic 2.',
+    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 4, Topic 2.',
     peerReviewCriteria: [
       'The teaching methods comprehensively apply the principles of constructively aligned teaching to the discipline/subject.',
       'The teaching methods effectively support students in active learning.'
@@ -69,7 +69,7 @@ export const courseCopy = {
   },
   part5: {
     title: 'Part 5',
-    instruction: 'Complete this part, then go to the last page of the canvas to generate a link. You can add the link to the peer review exercise in Chapter 5, Topic 1.',
+    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 5, Topic 1.',
     peerReviewCriteria: [
       'The assessment methods are appropriate and insightful.',
       'The course syllabus comprehensively applies the principles of constructively aligned teaching to the discipline/subject.',
