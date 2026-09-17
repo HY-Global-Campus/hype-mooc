@@ -12,11 +12,13 @@ const fieldCopyByExercise: Record<string, Record<string, FieldCopyEntry>> = {
     },
     nameAndScope: {
       label: 'Name and scope',
-      description: 'What is the name and scope of your course?',
+      description:
+        'What are the name and scope (i.e. the number of study credits) of your course?',
     },
     focus: {
       label: 'Focus',
-      description: 'What is the focus of your course development task?',
+      description:
+        'What is the focus of your course development task? For instance, what is challenging, problematic, or otherwise in need of attention in the design or teaching of the course you have selected to develop or create?',
     },
     targetStudents: {
       label: 'Target students',

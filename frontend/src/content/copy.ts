@@ -1,3 +1,21 @@
+/**
+ * One numbered step of a part's instructions. The object form renders the step with an
+ * inline link, used for the step that sends the student back to the MOOC.
+ */
+export type InstructionStep =
+  | string
+  | { intro: string; linkLabel: string; linkHref: string; outro: string };
+
+/** Copy for one part's landing page. */
+export type PartCopy = {
+  title: string;
+  intro: string;
+  /** Closing sentence of the intro, emphasised: which part this chapter's exercise needs. */
+  introEmphasis: string;
+  instructions: InstructionStep[];
+  peerReviewCriteria: string[];
+};
+
 export const courseCopy = {
   frontpage: { 
     title: 'Constructive Alignment in Course Design MOOC',
@@ -30,19 +48,43 @@ export const courseCopy = {
     }
   },
   part1: {
-    title: 'Part 1',
-    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 1, Topic 3.',
+    title: 'Part 1: Good teaching and learning at university & your course',
+    intro: 'The canvas has five parts, which you will fill in and submit several times throughout this course.',
+    introEmphasis: 'You only need to fill in Part 1 for the Exercise in Chapter 1, Topic 3.',
+    instructions: [
+      'Please answer the questions under "Reflection", "The course" and "Course context". You can find them on the following pages by clicking the "Next" button below.',
+      'After answering the questions in Part 1, come back to this page and copy the view-only link.',
+      {
+        intro: 'Return to the Exercise in MOOC ',
+        linkLabel: 'Chapter 1, Topic 3',
+        linkHref: 'https://courses.mooc.fi/org/uh-hype/courses/course-design-in-higher-education/chapter-1/teacher-as-a-key-person-planning-and-enacting-constructively-aligned-courses',
+        outro: '.',
+      },
+      'Submit the view-only link to the Exercise and peer-review three other students\' canvases.',
+    ],
     peerReviewCriteria: [
       'The reflection includes pedagogical argumentation which utilizes relevant concepts, supported by the course materials in a comprehensive way.',
-      'The course\'s target group has been analysed in depth.',
+      'The course\'s target group has been described thoroughly.',
       'The learning environment has been described thoroughly.',
       'Course\'s status as part of the degree programme curriculum has been considered extensively.',
       'The aims of the course development have been identified and analyzed in an insightful way.'
     ]
   },
   part2: {
-    title: 'Part 2',
-    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 2, Topic 3.',
+    title: 'Part 2: Intended learning outcomes',
+    intro: 'The canvas has five parts, which you will fill in and submit several times throughout this course.',
+    introEmphasis: 'You only need to fill in Part 2 for the Exercise in Chapter 2, Topic 3.',
+    instructions: [
+      'Please answer the questions under "Intended learning outcomes (ILOs)". You can find them on the following page by clicking the "Next" button below.',
+      'After answering the questions in Part 2, come back to this page and copy the view-only link.',
+      {
+        intro: 'Return to the Exercise in MOOC ',
+        linkLabel: 'Chapter 2, Topic 3',
+        linkHref: 'https://courses.mooc.fi/org/uh-hype/courses/course-design-in-higher-education/chapter-2/generic-academic-skills-as-learning-outcomes',
+        outro: '.',
+      },
+      'Submit the view-only link to the Exercise and peer-review three other students\' canvases.',
+    ],
     peerReviewCriteria: [
       'The ILOs are clear and easy to understand.',
       'The ILOs are measurable in concrete ways.',
@@ -53,23 +95,59 @@ export const courseCopy = {
     ]
   },
   part3: {
-    title: 'Part 3',
-    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 3, Topic 1.',
+    title: 'Part 3: Core content',
+    intro: 'The canvas has five parts, which you will fill in and submit several times throughout this course.',
+    introEmphasis: 'You only need to fill in Part 3 for the Exercise in Chapter 3, Topic 1.',
+    instructions: [
+      'Please answer the questions under "Core content". You can find them on the following page by clicking the "Next" button below.',
+      'After answering the questions in Part 3, come back to this page and copy the view-only link.',
+      {
+        intro: 'Return to the Exercise in MOOC ',
+        linkLabel: 'Chapter 3, Topic 1',
+        linkHref: 'https://courses.mooc.fi/org/uh-hype/courses/course-design-in-higher-education/chapter-3/core-content-analysis',
+        outro: '.',
+      },
+      'Submit the view-only link to the Exercise and peer-review three other students\' canvases.',
+    ],
     peerReviewCriteria: [
       'The choice of the core content aligns with the ILOs.'
     ]
   },
   part4: {
-    title: 'Part 4',
-    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 4, Topic 2.',
+    title: 'Part 4: Teaching methods',
+    intro: 'The canvas has five parts, which you will fill in and submit several times throughout this course.',
+    introEmphasis: 'You only need to fill in Part 4 for the Exercise in Chapter 4, Topic 2.',
+    instructions: [
+      'Please answer the questions under "Teaching methods". You can find them on the following page by clicking the "Next" button below.',
+      'After answering the questions in Part 4, come back to this page and copy the view-only link.',
+      {
+        intro: 'Return to the Exercise in MOOC ',
+        linkLabel: 'Chapter 4, Topic 2',
+        linkHref: 'https://courses.mooc.fi/org/uh-hype/courses/course-design-in-higher-education/chapter-4/activating-teaching-methods',
+        outro: '.',
+      },
+      'Submit the view-only link to the Exercise and peer-review three other students\' canvases.',
+    ],
     peerReviewCriteria: [
       'The teaching methods comprehensively apply the principles of constructively aligned teaching to the discipline/subject.',
       'The teaching methods effectively support students in active learning.'
     ]
   },
   part5: {
-    title: 'Part 5',
-    instruction: 'Complete this part, then submit this view-only link to the peer review exercise in Chapter 5, Topic 1.',
+    title: 'Part 5: Assessment methods and reflection',
+    intro: 'The canvas has five parts, which you will fill in and submit several times throughout this course.',
+    introEmphasis: 'You only need to fill in Part 5 for the Exercise in Chapter 5, Topic 1.',
+    instructions: [
+      'Please answer the questions under "Assessment methods", "Describe assessment methods" and "Constructive alignment reflection". You can find them on the following pages by clicking the "Next" button below.',
+      'After answering the questions in Part 5, come back to this page and copy the view-only link.',
+      {
+        intro: 'Return to the Exercise in MOOC ',
+        linkLabel: 'Chapter 5, Topic 1',
+        linkHref: 'https://courses.mooc.fi/org/uh-hype/courses/course-design-in-higher-education/chapter-5/assessment-of-students-learning',
+        outro: '.',
+      },
+      'Submit the view-only link to the Exercise and peer-review three other students\' canvases.',
+    ],
     peerReviewCriteria: [
       'The assessment methods are appropriate and insightful.',
       'The course syllabus comprehensively applies the principles of constructively aligned teaching to the discipline/subject.',

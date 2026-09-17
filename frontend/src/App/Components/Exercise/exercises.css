@@ -486,6 +486,19 @@ Chapter4Banner
   font-size: 20px;
 }
 
+.part-instruction-list {
+  font-size: 18px;
+  max-width: 720px;
+  margin: 0 auto clamp(20px, 2.5vh, 32px);
+  padding-left: 1.5rem;
+  text-align: left;
+}
+
+.part-instruction-list li {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
 .part-intro-subtitle {
   font-size: 24px;
   margin-top: 24px;
